@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - Zameen Real Estate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0d5c3a;
+            --primary-light: #e8f5e9;
+            --primary-dark: #094028;
+            --surface: #f8fafc;
+            --neutral: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --white: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
+            --border-radius-sm: 0.5rem;
+            --border-radius-md: 0.75rem;
+            --border-radius-lg: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            background-color: var(--surface);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5rem;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.025em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Hero */
+        .hero {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--primary-light);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Compact Non-Sticky Filters (Never Overlays Preview Images) */
+        .filters-section {
+            background-color: var(--white);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.85rem 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.5rem;
+            align-items: end;
+        }
+        
+        .search-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 0.45rem 0.85rem;
+            height: 38px;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+            font-family: inherit;
+            font-size: 0.875rem;
+            background-color: #f8fafc;
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+        
+        .search-btn {
+            padding: 0.45rem 1.25rem;
+            height: 38px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background-color 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .filter-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            height: 36px;
+            padding: 0.35rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--border-radius-sm);
+            background-color: #f8fafc;
+            font-family: inherit;
+            font-size: 0.825rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+        
+        .results-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.65rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .results-count {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .clear-filters-link {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .view-toggles {
+            display: flex;
+            gap: 0.35rem;
+        }
+        
+        .view-btn {
+            background: none;
+            border: 1px solid #cbd5e1;
+            padding: 0.35rem 0.6rem;
+            border-radius: var(--border-radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .view-btn.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        /* Property Grid */
+        .properties-section {
+            padding: 2.5rem 0 4rem;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .property-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        
+        .property-grid.list-view .property-card {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .property-grid.list-view .property-image-wrapper {
+            width: 300px;
+            flex-shrink: 0;
+        }
+        
+        .property-grid.list-view .property-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .property-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .property-image-wrapper {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+
+        .property-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .property-card:hover .property-image {
+            transform: scale(1.05);
+        }
+
+        .property-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-purpose {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .badge-type {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
+            backdrop-filter: blur(4px);
+        }
+
+        .property-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .property-price {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .property-location {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .property-specs {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--neutral);
+            margin-top: auto;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .property-footer {
+            margin-top: 1.5rem;
+        }
+        
+        .property-footer .btn {
+            width: 100%;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--neutral);
+            background-color: var(--white);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        
+        .page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Mobile Nav Drawer */
+        .mobile-nav-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-nav-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .mobile-nav-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            max-width: 85vw;
+            background-color: var(--white);
+            z-index: 999;
+            box-shadow: -10px 0 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-nav-drawer.open {
+            transform: translateX(0);
+        }
+        .mobile-nav-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--neutral);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mobile-nav-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .mobile-nav-link {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--neutral);
+            transition: color 0.2s;
+        }
+        .mobile-nav-link:hover, .mobile-nav-link.active {
+            color: var(--primary);
+        }
+        .mobile-nav-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--neutral);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-primary);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo {
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .footer-desc {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+        }
+
+        .footer-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .property-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+            .property-grid.list-view .property-card {
+                flex-direction: column;
+            }
+            .property-grid.list-view .property-image-wrapper {
+                width: 100%;
+            }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            grid-column: 1 / -1;
+            background-color: var(--white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Card Hover Preview Overlay & Photo Pill */
+        .property-image-wrapper {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .property-title {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .property-title:hover {
+            color: var(--primary);
+        }
+
+        .media-hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .property-image-wrapper:hover .media-hover-overlay {
+            opacity: 1;
+        }
+
+        .media-preview-badge {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            color: var(--primary);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.15rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transform: translateY(6px);
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .property-image-wrapper:hover .media-preview-badge {
+            transform: translateY(0);
+        }
+
+        .property-photo-pill {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* 4-Angle Property Preview Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--border-radius-lg);
+            width: 95%;
+            max-width: 1100px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.15rem;
+            right: 1.15rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 9999px;
+            background: #f1f5f9;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 25;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: #e2e8f0;
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        /* 4-Angle Gallery - 100% Width & 70% Prominent Height */
+        .modal-gallery-container {
+            position: relative;
+            width: 100%;
+            height: clamp(380px, 58vh, 540px);
+            background-color: #0b1320;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            padding: 0;
+            display: block;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-angle-badge {
+            position: absolute;
+            top: 1.15rem;
+            left: 1.15rem;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.8125rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .gallery-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.35rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+            z-index: 15;
+        }
+
+        .gallery-nav-btn:hover {
+            background: #ffffff;
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .gallery-nav-btn.prev { left: 1rem; }
+        .gallery-nav-btn.next { right: 1rem; }
+
+        .modal-thumbs-strip {
+            position: absolute;
+            bottom: 0.85rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 15;
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(10px);
+            padding: 0.45rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .gallery-thumb-wrapper {
+            position: relative;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            width: 62px;
+            height: 42px;
+        }
+
+        .gallery-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0.65;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .gallery-thumb-wrapper.active .gallery-thumb {
+            opacity: 1;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .gallery-thumb-num {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 0.6rem;
+            font-weight: 800;
+            width: 14px;
+            height: 14px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Modal Content Body - Fully Scrollable */
+        .modal-detail-body {
+            padding: 2rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 2.25rem;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .modal-detail-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-detail-body::-webkit-scrollbar-thumb {
+            background: rgba(15, 23, 42, 0.18);
+            border-radius: 10px;
+        }
+
+        .modal-detail-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            background: var(--surface);
+            padding: 1.15rem;
+            border-radius: var(--border-radius-sm);
+            margin: 1.25rem 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .modal-spec-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-spec-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .modal-spec-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+            margin-top: 0.75rem;
+        }
+
+        .modal-amenity-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-amenity-chip i {
+            color: var(--primary);
+        }
+
+        .modal-agent-sidebar {
+            background: var(--surface);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            align-self: start;
+        }
+
+        .modal-agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .modal-agent-img {
+            width: 54px;
+            height: 54px;
+            border-radius: 9999px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .modal-agent-name {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .modal-agent-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-agent-agency {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .modal-action-btn-primary {
+            background: linear-gradient(135deg, #0d5c3a 0%, #064e3b 100%);
+            color: #ffffff;
+            font-weight: 700;
+            padding: 0.75rem;
+            border-radius: var(--border-radius-sm);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(13, 92, 58, 0.3);
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .modal-action-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(13, 92, 58, 0.4);
+        }
+
+        .modal-wa-btn {
+            background-color: #25d366;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.65rem;
+            border-radius: var(--border-radius-sm);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .modal-wa-btn:hover {
+            background-color: #20ba59;
+        }
+
+        .modal-call-btn {
+            background-color: #ffffff;
+            color: var(--text-primary);
+            border: 1px solid #cbd5e1;
+            font-weight: 600;
+            padding: 0.65rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .modal-call-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .modal-detail-body {
+                grid-template-columns: 1fr;
+                padding: 1.25rem 1rem;
+                gap: 1.5rem;
+            }
+            .modal-gallery-container {
+                height: clamp(200px, 32vh, 280px);
+            }
+            .modal-detail-specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <a href="zameen.html" class="logo">ZAMEEN</a>
+            <nav class="nav-links">
+                <a href="zameen.html" class="nav-link">Home</a>
+                <a href="properties.html" class="nav-link active" id="nav-all">Properties</a>
+                <a href="properties.html?purpose=sale" class="nav-link" id="nav-buy">Buy</a>
+                <a href="properties.html?purpose=rent" class="nav-link" id="nav-rent">Rent</a>
+                <a href="properties.html?type=Plot" class="nav-link" id="nav-land">Land & Plots</a>
+                <a href="properties.html?type=Commercial" class="nav-link" id="nav-commercial">Commercial</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="zameen.html?action=list" class="btn btn-primary">+ List Property</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="mobile-nav-header">
+            <a href="zameen.html" class="logo">ZAMEEN</a>
+            <button class="modal-close-btn" style="position: static;" id="mobileNavCloseBtn" aria-label="Close menu">✕</button>
+        </div>
+        <div class="mobile-nav-body">
+            <a href="zameen.html" class="mobile-nav-link">Home <span>→</span></a>
+            <a href="properties.html" class="mobile-nav-link">All Properties <span>→</span></a>
+            <a href="properties.html?purpose=sale" class="mobile-nav-link">Buy Properties <span>→</span></a>
+            <a href="properties.html?purpose=rent" class="mobile-nav-link">Rent Properties <span>→</span></a>
+            <a href="properties.html?type=Plot" class="mobile-nav-link">Land & Plots <span>→</span></a>
+            <a href="properties.html?type=Commercial" class="mobile-nav-link">Commercial Real Estate <span>→</span></a>
+            <a href="dashboard.html" class="mobile-nav-link">Seller Dashboard <span>→</span></a>
+        </div>
+        <div class="mobile-nav-footer">
+            <a href="zameen.html?action=list" class="btn btn-primary" style="width: 100%; text-align: center;">+ List Your Property</a>
+        </div>
+    </div>
+
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>All Properties</h1>
+            <p>Discover Your Perfect Investment</p>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by location, title, or keywords...">
+                <button id="searchBtn" class="search-btn">Search</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">City</label>
+                    <select id="filterCity" class="filter-select">
+                        <option value="All">All Cities</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Islamabad">Islamabad</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Property Type</label>
+                    <select id="filterType" class="filter-select">
+                        <option value="All">All Types</option>
+                        <option value="House">House</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Farmhouse">Farmhouse</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Purpose</label>
+                    <select id="filterPurpose" class="filter-select">
+                        <option value="All">All Purposes</option>
+                        <option value="Sale">Buy</option>
+                        <option value="Rent">Rent</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Price Range (PKR)</label>
+                    <select id="filterPrice" class="filter-select">
+                        <option value="All">Any Price</option>
+                        <option value="0-5000000">Under 50 Lac</option>
+                        <option value="5000000-20000000">50 Lac - 2 Crore</option>
+                        <option value="20000000-50000000">2 Crore - 5 Crore</option>
+                        <option value="50000000-99999999999">Above 5 Crore</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Bedrooms</label>
+                    <select id="filterBeds" class="filter-select">
+                        <option value="All">Any</option>
+                        <option value="1">1 Bed</option>
+                        <option value="2">2 Beds</option>
+                        <option value="3">3 Beds</option>
+                        <option value="4+">4+ Beds</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="results-bar">
+                <div class="results-count" id="resultsCount">Showing 16 of 16 properties</div>
+                <div class="view-toggles">
+                    <button class="view-btn active" id="gridViewBtn" title="Grid View"><i class="fas fa-th-large"></i></button>
+                    <button class="view-btn" id="listViewBtn" title="List View"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Property Grid -->
+    <section class="properties-section">
+        <div class="container">
+            <div class="property-grid" id="propertyGrid">
+                <!-- Cards will be injected by JS -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <button class="page-btn" onclick="goToPage(1)" disabled aria-label="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                <button class="page-btn active" onclick="goToPage(1)">1</button>
+                <button class="page-btn" onclick="goToPage(2)">2</button>
+                <button class="page-btn" onclick="goToPage(2)" aria-label="Next Page"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="zameen.html" class="logo">ZAMEEN</a>
+                    <p class="footer-desc">Pakistan's premier real estate platform, connecting buyers, sellers, and renters with exceptional properties across the country.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <div class="footer-links">
+                        <a href="zameen.html" class="footer-link">Home</a>
+                        <a href="properties.html" class="footer-link">Properties</a>
+                        <a href="properties.html?purpose=sale" class="footer-link">Buy</a>
+                        <a href="properties.html?purpose=rent" class="footer-link">Rent</a>
+                        <a href="dashboard.html" class="footer-link">Dashboard</a>
+                        <a href="properties.html?type=Commercial" class="footer-link">Commercial & Agencies</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer-title">Cities</h3>
+                    <div class="footer-links">
+                        <a href="properties.html?city=Lahore" class="footer-link">Lahore</a>
+                        <a href="properties.html?city=Karachi" class="footer-link">Karachi</a>
+                        <a href="properties.html?city=Islamabad" class="footer-link">Islamabad</a>
+                        <a href="properties.html?city=Islamabad" class="footer-link">Rawalpindi</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="footer-links">
+                        <a href="mailto:info@zameen.example.com" class="footer-link"><i class="fas fa-envelope me-2"></i> info@zameen.example.com</a>
+                        <a href="tel:+92111111111" class="footer-link"><i class="fas fa-phone me-2"></i> +92 111 111 111</a>
+                        <a href="https://maps.google.com/?q=Lahore,Pakistan" target="_blank" rel="noopener noreferrer" class="footer-link"><i class="fas fa-map-marker-alt me-2"></i> Lahore, Pakistan</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Zameen Real Estate. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 4-Angle Property Preview Modal -->
+    <div class="modal-overlay" id="propertyPreviewModal" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closePropertyPreview()" aria-label="Close modal">✕</button>
+
+            <!-- 4-Angle Gallery with object-fit: contain -->
+            <div class="modal-gallery-container">
+                <div class="modal-angle-badge" id="previewModalAngleBadge">
+                    <i class="fas fa-camera"></i> <span id="previewModalAngleText">Angle 1/4: Exterior Front Elevation</span>
+                </div>
+                <img src="./image/house-modern.jpg" alt="Property Gallery" id="previewModalMainImg" class="modal-main-img">
+                <button class="gallery-nav-btn prev" onclick="prevModalAngle()" aria-label="Previous angle">‹</button>
+                <button class="gallery-nav-btn next" onclick="nextModalAngle()" aria-label="Next angle">›</button>
+                
+                <!-- Thumbnail strip -->
+                <div class="modal-thumbs-strip" id="previewModalThumbs"></div>
+            </div>
+
+            <!-- Scrollable Property Information Content (Never clipped) -->
+            <div class="modal-detail-body">
+                <div>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                        <span class="badge" style="background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">✓ Verified Ownership</span>
+                        <span class="badge badge-type" id="previewModalType">House</span>
+                        <span class="badge" style="background:#f1f5f9; color:#475569;">ID: <span id="previewModalId">ZAM-101</span></span>
+                    </div>
+                    <h2 style="font-family: var(--font-serif); font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--text-primary); word-break: break-word;" id="previewModalTitle">Modern 1 Kanal House</h2>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                        <span id="previewModalLocation">DHA Phase 6, Lahore</span>
+                    </div>
+                    <div style="font-size: 1.85rem; font-weight: 800; color: var(--primary); margin-bottom: 1.25rem;" id="previewModalPrice">
+                        PKR 6.50 Crore
+                    </div>
+
+                    <!-- Key Specifications Grid -->
+                    <div class="modal-detail-specs-grid">
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Land Area</span>
+                            <span class="modal-spec-val" id="specModalArea">1 Kanal</span>
+                        </div>
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Bedrooms</span>
+                            <span class="modal-spec-val" id="specModalBeds">5 Beds</span>
+                        </div>
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Bathrooms</span>
+                            <span class="modal-spec-val" id="specModalBaths">6 Baths</span>
+                        </div>
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Parking Space</span>
+                            <span class="modal-spec-val" id="specModalParking">3 Covered Cars</span>
+                        </div>
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Year Built</span>
+                            <span class="modal-spec-val" id="specModalYear">2024</span>
+                        </div>
+                        <div class="modal-spec-box">
+                            <span class="modal-spec-lbl">Furnishing</span>
+                            <span class="modal-spec-val" id="specModalFurnishing">Fully Furnished</span>
+                        </div>
+                    </div>
+
+                    <!-- Overview -->
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text-primary);">Property Overview</h3>
+                    <p id="previewModalDesc" style="color: var(--text-secondary); line-height: 1.65; margin-bottom: 1.5rem; font-size: 0.925rem;">
+                        An exceptional state-of-the-art designer villa crafted with imported Spanish porcelain tiles and bespoke Turkish fittings.
+                    </p>
+
+                    <!-- Amenities -->
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text-primary);">Amenities & Features</h3>
+                    <div class="modal-amenities-grid" id="previewModalAmenities"></div>
+
+                    <!-- Location Vicinity -->
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--border-radius-sm);">
+                        <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem;"><i class="fas fa-map-marked-alt" style="color: var(--primary);"></i> Location Vicinity</div>
+                        <div style="font-size: 0.825rem; color: var(--text-secondary);">
+                            5 min to Commercial Boulevard • 3 min to Central Park • 8 min to Beaconhouse School
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Sidebar -->
+                <div>
+                    <div class="modal-agent-sidebar">
+                        <div class="modal-agent-header">
+                            <img src="./image/agent-avatar1.png" alt="Agent" id="previewModalAgentImg" class="modal-agent-img">
+                            <div>
+                                <div class="modal-agent-name" id="previewModalAgentName">Muhammad Ibraheem</div>
+                                <div class="modal-agent-role" id="previewModalAgentRole">Principal Realtor</div>
+                                <div class="modal-agent-agency" id="previewModalAgentAgency">Zameen Signature Realty</div>
+                            </div>
+                        </div>
+
+                        <!-- Escrow Token Deposit -->
+                        <button class="modal-action-btn-primary" onclick="openTokenPaymentModal()">
+                            🛡️ Reserve & Pay Token (Escrow)
+                        </button>
+
+                        <!-- WhatsApp Agent Contact -->
+                        <button class="modal-wa-btn" id="previewModalWaBtn">
+                            <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp Agent
+                        </button>
+
+                        <!-- Direct Call -->
+                        <a href="tel:+923001234567" id="previewModalPhoneBtn" class="modal-call-btn">
+                            <i class="fas fa-phone"></i> Call Directly
+                        </a>
+
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                            <button class="btn btn-outline" id="modalFavBtn" style="flex: 1; padding: 0.45rem; font-size: 0.8rem;" onclick="toggleModalFav()">
+                                <i class="far fa-heart"></i> Save
+                            </button>
+                            <a href="dashboard.html" class="btn btn-outline" style="flex: 1; padding: 0.45rem; font-size: 0.8rem; text-decoration: none; text-align: center;">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escrow Token Deposit Checkout Modal -->
+    <div class="modal-overlay" id="tokenPaymentModal" style="z-index: 1050;">
+        <div class="modal-card" style="max-width: 500px; padding: 2rem;">
+            <button class="modal-close-btn" onclick="closeTokenPaymentModal()">✕</button>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🛡️</div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.4rem;">Escrow Token Reservation</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem;">
+                    Lock this property with a 100% refundable token deposit held under state-regulated escrow.
+                </p>
+            </div>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: var(--border-radius-sm); border: 1px solid #e2e8f0; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Token Deposit Amount:</span>
+                    <strong style="color: var(--primary);">PKR 100,000</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <span style="color: var(--text-secondary);">Guarantee Period:</span>
+                    <strong>7 Days Full Refund</strong>
+                </div>
+            </div>
+            <form onsubmit="handleTokenSubmit(event)">
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display:block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Your Full Name</label>
+                    <input type="text" required class="search-input" style="width:100%; border-radius:var(--border-radius-sm);" placeholder="e.g. Tariq Mehmood">
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display:block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Phone / WhatsApp</label>
+                    <input type="tel" required class="search-input" style="width:100%; border-radius:var(--border-radius-sm);" placeholder="+92 300 1234567">
+                </div>
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="display:block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Payment Channel</label>
+                    <select class="filter-select" style="width:100%;">
+                        <option>HBL / Meezan Bank Direct Escrow</option>
+                        <option>Nayapay / Sadapay Escrow</option>
+                        <option>Visa / Mastercard Corporate Debit</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-action-btn-primary" style="padding: 0.85rem;">
+                    Confirm & Deposit Escrow Token
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Formatter for PKR
+        const formatPKR = (amount) => {
+            if (amount >= 10000000) {
+                return (amount / 10000000).toFixed(2) + ' Crore';
+            } else if (amount >= 100000) {
+                return (amount / 100000).toFixed(2) + ' Lac';
+            }
+            return amount.toLocaleString();
+        };
+
+        // Complete 16-Property Dataset with 4 Multi-Angle Photos Each
+        const propertiesData = [
+            {
+                id: 1,
+                title: 'Modern 1 Kanal House in DHA Phase 6',
+                city: 'Lahore',
+                location: 'DHA Phase 6, Sector J, Lahore',
+                type: 'House',
+                purpose: 'Sale',
+                price: 65000000,
+                beds: 5,
+                baths: 6,
+                parking: 3,
+                yearBuilt: 2024,
+                furnishing: 'Fully Furnished',
+                area: '1 Kanal (20 Marla)',
+                images: [
+                    './image/house-modern.jpg',
+                    './image/house-interior-living.jpg',
+                    './image/house-pool.jpg',
+                    './image/villa-terrace.jpg'
+                ],
+                angleTitles: [
+                    'Exterior Front Elevation',
+                    'Interior Main Living Lounge',
+                    'Courtyard & Swimming Pool',
+                    'Rooftop Terrace & Sunset View'
+                ],
+                description: 'An architectural masterpiece in DHA Phase 6 featuring imported Turkish travertine, bespoke oak cabinetry, double-height foyer, Italian sanitary ware, and smart home automation.',
+                amenities: ['Private Pool', 'Covered Parking', 'Solar Power System', 'Smart Security', 'Imported Tiles', 'Servant Quarters'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 2,
+                title: 'Ultra-Luxury Contemporary Villa with Private Pool',
+                city: 'Islamabad',
+                location: 'Sector F-7/2, Islamabad',
+                type: 'House',
+                purpose: 'Sale',
+                price: 120000000,
+                beds: 6,
+                baths: 7,
+                parking: 4,
+                yearBuilt: 2023,
+                furnishing: 'Fully Furnished',
+                area: '2 Kanal (40 Marla)',
+                images: [
+                    './image/villa-luxury.jpg',
+                    './image/house-pool.jpg',
+                    './image/villa-terrace.jpg',
+                    './image/house-interior-living.jpg'
+                ],
+                angleTitles: [
+                    'Designer Front Facade & Driveway',
+                    'Heated Swimming Pool & Deck',
+                    'Upper Floor Panoramic Terrace',
+                    'Formal Drawing Room & Foyer'
+                ],
+                description: 'Nestled in the prime diplomatic corridor of Sector F-7, this villa offers uninterrupted views of the Margalla Hills with bullet-proof glazing, indoor sauna, and manicured gardens.',
+                amenities: ['Margalla Views', 'Heated Pool', 'Sauna & Gym', 'Bullet-Proof Glazing', '4-Car Garage', 'Guard Room'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 3,
+                title: 'Fully Furnished High-Floor 3-Bed Apartment',
+                city: 'Karachi',
+                location: 'Clifton Block 4, Karachi',
+                type: 'Apartment',
+                purpose: 'Rent',
+                price: 150000,
+                beds: 3,
+                baths: 3,
+                parking: 2,
+                yearBuilt: 2023,
+                furnishing: 'Fully Furnished',
+                area: '2,000 Sq. Ft.',
+                images: [
+                    './image/apartment-interior.jpg',
+                    './image/apartments-skyline.avif',
+                    './image/flat-luxury-bed.jpg',
+                    './image/flat-luxury-kitchen.jpg'
+                ],
+                angleTitles: [
+                    'Open-Plan Living & Dining Space',
+                    'Sea-Facing Skyline View',
+                    'Master Bedroom Suite',
+                    'Designer Chef Kitchen'
+                ],
+                description: 'Modern waterfront living with 24/7 power backup, dual high-speed elevators, resident gym, and private balcony overlooking the Arabian Sea in prestigious Clifton.',
+                amenities: ['Sea View', 'Gym & Fitness Center', '24/7 Generator Backup', 'High-Speed Elevators', 'CCTV Security', 'Dedicated Parking'],
+                agent: { name: 'Ayesha Khan', role: 'Senior Portfolio Advisor', agency: 'Capital Asset Advisory', phone: '+923129876543', avatar: './image/agent-female.jpg' }
+            },
+            {
+                id: 4,
+                title: 'Exclusive Penthouse with 360-Degree Skyline View',
+                city: 'Lahore',
+                location: 'Gulberg III, Main Boulevard, Lahore',
+                type: 'Apartment',
+                purpose: 'Sale',
+                price: 45000000,
+                beds: 4,
+                baths: 4,
+                parking: 3,
+                yearBuilt: 2024,
+                furnishing: 'Semi-Furnished',
+                area: '3,500 Sq. Ft.',
+                images: [
+                    './image/penthouse-luxury.jpg',
+                    './image/flat-luxury-living.jpg',
+                    './image/apartments-skyline.avif',
+                    './image/flat-luxury-bed.jpg'
+                ],
+                angleTitles: [
+                    'Wraparound Penthouse Terrace',
+                    'Main Skylit Living Hall',
+                    'City Skyline at Dusk',
+                    'Executive Master Suite'
+                ],
+                description: 'Perched atop Gulberg’s most coveted high-rise, this penthouse features private elevator access, double-height floor-to-ceiling glass, and a private plunge pool on the rooftop.',
+                amenities: ['Private Elevator', 'Rooftop Plunge Pool', 'Double Height Ceilings', 'Underground Parking', 'Smart Climate Control', 'Concierge Service'],
+                agent: { name: 'Chaudhry Tariq Mehmood', role: 'Commercial Real Estate Partner', agency: 'Apex Landmark Properties', phone: '+923007654321', avatar: './image/agent-male.jpg' }
+            },
+            {
+                id: 5,
+                title: 'Prime 10 Marla Corner Residential Plot',
+                city: 'Rawalpindi',
+                location: 'Bahria Town Phase 8, Rawalpindi',
+                type: 'Plot',
+                purpose: 'Sale',
+                price: 25000000,
+                beds: 0,
+                baths: 0,
+                parking: 0,
+                yearBuilt: 2024,
+                furnishing: 'Unfurnished',
+                area: '10 Marla (250 Sq. Yds)',
+                images: [
+                    './image/plot-land.jpg',
+                    './image/land-drone.webp',
+                    './image/farmland-aerial.jpg',
+                    './image/orchard-land.jpg'
+                ],
+                angleTitles: [
+                    'Corner Plot Frontage & Road View',
+                    'Aerial Boundary Drone Demarcation',
+                    'Sector Plan & Park Vicinity',
+                    'Boulevard Access & Infrastructure'
+                ],
+                description: 'Direct owner listing for a verified corner plot facing a 50-foot wide boulevard and park. 100% underground power, gas, and LDA-approved documentation ready for immediate possession.',
+                amenities: ['Boulevard Corner', 'Park Facing', 'Underground Electricity', 'Water Supply', 'Sewerage Complete', 'Possession Ready'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 6,
+                title: '10 Acres High-Yield Agricultural Land with Canal Water',
+                city: 'Faisalabad',
+                location: 'Jhang Road Expressway, Faisalabad',
+                type: 'Farmhouse',
+                purpose: 'Sale',
+                price: 80000000,
+                beds: 0,
+                baths: 0,
+                parking: 0,
+                yearBuilt: 2024,
+                furnishing: 'Unfurnished',
+                area: '10 Acres (80 Kanal)',
+                images: [
+                    './image/farmland-aerial.jpg',
+                    './image/orchard-estate.jpg',
+                    './image/plot-land.jpg',
+                    './image/land-drone.webp'
+                ],
+                angleTitles: [
+                    'Aerial Canal & Field Topography',
+                    'Fruit Orchard & Cultivated Acreage',
+                    'Farm Access Road & Tubewell',
+                    'Satellite Boundary Demarcation'
+                ],
+                description: 'High-fertility agricultural land with round-the-clock canal irrigation rights and a private solar tubewell. Direct 80-foot metalled road front with clear land revenue records.',
+                amenities: ['Canal Water Share', 'Solar Tubewell', 'Metalled Road Front', 'Electricity Transformer', 'Zero Encumbrance', 'Fertile Soil'],
+                agent: { name: 'Chaudhry Tariq Mehmood', role: 'Commercial Real Estate Partner', agency: 'Apex Landmark Properties', phone: '+923007654321', avatar: './image/agent-male.jpg' }
+            },
+            {
+                id: 7,
+                title: 'Designer 4 Kanal Luxury Farmhouse Retreat',
+                city: 'Islamabad',
+                location: 'Chak Shahzad, Park Road, Islamabad',
+                type: 'Farmhouse',
+                purpose: 'Sale',
+                price: 55000000,
+                beds: 4,
+                baths: 5,
+                parking: 6,
+                yearBuilt: 2023,
+                furnishing: 'Fully Furnished',
+                area: '4 Kanal (80 Marla)',
+                images: [
+                    './image/farmhouse.jpg',
+                    './image/orchard-estate.jpg',
+                    './image/villa-luxury.jpg',
+                    './image/house-interior-living.jpg'
+                ],
+                angleTitles: [
+                    'Farmhouse Exterior & Lawns',
+                    'Citrus Orchard & Gazebo',
+                    'Courtyard & Veranda Lounge',
+                    'Rustic Interior Fireplace Hall'
+                ],
+                description: 'Sprawling countryside estate featuring organic citrus groves, heated plunge pool, dedicated barbecue pavilion, and imported Swedish pine timber interior accents.',
+                amenities: ['Organic Orchard', 'Heated Pool', 'BBQ Pavilion', 'Solar Backup', 'Staff Quarters', 'Gated Perimeter'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 8,
+                title: '2 Acres Prime Industrial Plot Near Port Expressway',
+                city: 'Karachi',
+                location: 'Port Qasim Industrial Area, Karachi',
+                type: 'Plot',
+                purpose: 'Sale',
+                price: 150000000,
+                beds: 0,
+                baths: 0,
+                parking: 0,
+                yearBuilt: 2024,
+                furnishing: 'Unfurnished',
+                area: '2 Acres (16 Kanal)',
+                images: [
+                    './image/land-drone.webp',
+                    './image/plot-land.jpg',
+                    './image/commercial-towers.avif',
+                    './image/farmland-aerial.jpg'
+                ],
+                angleTitles: [
+                    'Port Corridor Aerial View',
+                    'Frontage & Heavy Vehicle Access',
+                    'Industrial Grid Boundary',
+                    'Substation Connectivity'
+                ],
+                description: 'Designated heavy industrial land with approved sub-station power load and direct access for 40-foot multi-axle freight containers. Clear Port Qasim Authority lease title.',
+                amenities: ['Heavy Vehicle Access', 'Industrial Gas Line', '11kV Power Line', 'Boundary Walled', 'Ready for Warehouse', 'Verified Lease'],
+                agent: { name: 'Ayesha Khan', role: 'Senior Portfolio Advisor', agency: 'Capital Asset Advisory', phone: '+923129876543', avatar: './image/agent-female.jpg' }
+            },
+            {
+                id: 9,
+                title: 'Corporate Office Space in Blue Area Financial District',
+                city: 'Islamabad',
+                location: 'Blue Area, Jinnah Avenue, Islamabad',
+                type: 'Commercial',
+                purpose: 'Rent',
+                price: 300000,
+                beds: 0,
+                baths: 2,
+                parking: 4,
+                yearBuilt: 2023,
+                furnishing: 'Fully Furnished',
+                area: '2,500 Sq. Ft.',
+                images: [
+                    './image/office-commercial.jpg',
+                    './image/office-boardroom.jpg',
+                    './image/office-building.jpg',
+                    './image/commercial-showroom.jpg'
+                ],
+                angleTitles: [
+                    'Main Workstation Hall (30 Desks)',
+                    'Executive Boardroom & AV System',
+                    'Glass Tower Exterior Facade',
+                    'Reception Lounge & Coffee Bar'
+                ],
+                description: 'Plug-and-play corporate office space tailored for IT firms or multinational subsidiaries. Features 30 ergonomic workstations, private executive cabins, and dedicated optical fiber.',
+                amenities: ['Fiber Optic Ready', 'Executive Boardroom', 'Central HVAC', 'Bio-Metric Security', '4 Reserved Parking', 'Kitchenette'],
+                agent: { name: 'Chaudhry Tariq Mehmood', role: 'Commercial Real Estate Partner', agency: 'Apex Landmark Properties', phone: '+923007654321', avatar: './image/agent-male.jpg' }
+            },
+            {
+                id: 10,
+                title: 'Multi-Storey Corporate Plaza with Basement Parking',
+                city: 'Lahore',
+                location: 'Gulberg II, Main Boulevard, Lahore',
+                type: 'Commercial',
+                purpose: 'Sale',
+                price: 450000000,
+                beds: 0,
+                baths: 10,
+                parking: 25,
+                yearBuilt: 2024,
+                furnishing: 'Semi-Furnished',
+                area: '10,000 Sq. Ft.',
+                images: [
+                    './image/office-building.jpg',
+                    './image/office-boardroom.jpg',
+                    './image/office-commercial.jpg',
+                    './image/commercial-towers.avif'
+                ],
+                angleTitles: [
+                    'Main Boulevard Corner Facade',
+                    'Executive Conference Level',
+                    'Typical Office Floor Open Plan',
+                    'Underground Valet Entry'
+                ],
+                description: 'Landmark commercial building yielding 9.2% annual rental returns. Fully leased to high-credit multinational tenants with dual Otis elevators and rooftop helipad access.',
+                amenities: ['High Rental Yield', 'Basement Parking', 'Dual Otis Elevators', 'Full Power Backup', 'Fire Sprinkler System', 'LDA Approved'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 11,
+                title: 'Modern High-Cube Logistics Warehouse Facility',
+                city: 'Karachi',
+                location: 'Super Highway Industrial Park, Karachi',
+                type: 'Commercial',
+                purpose: 'Rent',
+                price: 500000,
+                beds: 0,
+                baths: 4,
+                parking: 10,
+                yearBuilt: 2023,
+                furnishing: 'Unfurnished',
+                area: '20,000 Sq. Ft.',
+                images: [
+                    './image/warehouse.jpg',
+                    './image/warehouse-interior.jpg',
+                    './image/office-building.jpg',
+                    './image/commercial-showroom.jpg'
+                ],
+                angleTitles: [
+                    'Warehouse Loading Docks Front',
+                    'Internal Clear Height & Racking',
+                    'Administrative Office Annex',
+                    'Perimeter Truck Turning Bay'
+                ],
+                description: 'Pre-engineered steel warehouse featuring 32-foot clear eaves height, laser-screed concrete floors with 5-ton/sqm load capacity, 4 automated hydraulic dock levelers, and LED bay lighting.',
+                amenities: ['32ft Clear Height', '4 Hydraulic Docks', '5-Ton Floor Load', 'Fire Hydrant Network', 'Truck Staging Area', '24/7 Security Patrol'],
+                agent: { name: 'Ayesha Khan', role: 'Senior Portfolio Advisor', agency: 'Capital Asset Advisory', phone: '+923129876543', avatar: './image/agent-female.jpg' }
+            },
+            {
+                id: 12,
+                title: 'High-Visibility Ground Floor Commercial Shop',
+                city: 'Karachi',
+                location: 'Bahria Town Karachi, Theme Park Commercial',
+                type: 'Commercial',
+                purpose: 'Sale',
+                price: 35000000,
+                beds: 0,
+                baths: 1,
+                parking: 2,
+                yearBuilt: 2024,
+                furnishing: 'Unfurnished',
+                area: '800 Sq. Ft.',
+                images: [
+                    './image/commercial-towers.avif',
+                    './image/commercial-showroom.jpg',
+                    './image/office-commercial.jpg',
+                    './image/office-building.jpg'
+                ],
+                angleTitles: [
+                    'Commercial Plaza Exterior Front',
+                    'Double-Height Glass Shop Front',
+                    'Promenade Foot Traffic View',
+                    'Dedicated Customer Parking'
+                ],
+                description: 'High foot-traffic retail shop directly facing Theme Park Commercial Broadway. Ideal for bank branches, designer retail, or specialty pharmacy franchises.',
+                amenities: ['Main Broadway Front', 'Glass Curtain Wall', 'Heavy Footfall Area', 'Visitor Parking', 'Full Backup Power', 'Security Monitored'],
+                agent: { name: 'Ayesha Khan', role: 'Senior Portfolio Advisor', agency: 'Capital Asset Advisory', phone: '+923129876543', avatar: './image/agent-female.jpg' }
+            },
+            {
+                id: 13,
+                title: 'Corner Commercial Showroom with 100-Ft Frontage',
+                city: 'Lahore',
+                location: 'MM Alam Road, Gulberg III, Lahore',
+                type: 'Commercial',
+                purpose: 'Sale',
+                price: 85000000,
+                beds: 0,
+                baths: 2,
+                parking: 6,
+                yearBuilt: 2023,
+                furnishing: 'Fully Furnished',
+                area: '1,500 Sq. Ft.',
+                images: [
+                    './image/commercial-showroom.jpg',
+                    './image/office-commercial.jpg',
+                    './image/commercial-towers.avif',
+                    './image/office-boardroom.jpg'
+                ],
+                angleTitles: [
+                    'Showroom Glass Display Frontage',
+                    'Interior High-End Display Floor',
+                    'Night Illumination Exterior',
+                    'VIP Client Discussion Suite'
+                ],
+                description: 'Prime retail asset in Lahore’s premier fashion and dining corridor. Massive glass frontage offering supreme brand visibility, central climate control, and dedicated customer parking.',
+                amenities: ['MM Alam Frontage', 'Valet Parking', 'Central Air Conditioning', 'Glass Showcase', 'CCTV Surveillance', 'LDA Verified'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 14,
+                title: 'Architectural Designer House with Indoor Heated Pool',
+                city: 'Islamabad',
+                location: 'Sector E-7, Islamabad',
+                type: 'House',
+                purpose: 'Sale',
+                price: 140000000,
+                beds: 5,
+                baths: 6,
+                parking: 4,
+                yearBuilt: 2024,
+                furnishing: 'Fully Furnished',
+                area: '2 Kanal (40 Marla)',
+                images: [
+                    './image/house-pool.jpg',
+                    './image/house-interior-living.jpg',
+                    './image/villa-luxury.jpg',
+                    './image/villa-terrace.jpg'
+                ],
+                angleTitles: [
+                    'Indoor Heated Pool Lounge',
+                    'Double-Height Living Foyer',
+                    'Exterior Architectural Facade',
+                    'Margalla View Sky Deck'
+                ],
+                description: 'Bespoke contemporary luxury living in elite Sector E-7 with solar hybrid heating, German kitchen appliances, Italian marble flooring, and panoramic Margalla mountain scenery.',
+                amenities: ['Indoor Heated Pool', 'Margalla Views', 'Solar Hybrid 20kW', 'Smart Home Automation', 'German Kitchen', '4-Car Garage'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            },
+            {
+                id: 15,
+                title: 'Luxury 2-Bed Flat with Panoramic Balcony',
+                city: 'Karachi',
+                location: 'DHA Phase 8, Creek Vista, Karachi',
+                type: 'Apartment',
+                purpose: 'Sale',
+                price: 18000000,
+                beds: 2,
+                baths: 2,
+                parking: 1,
+                yearBuilt: 2023,
+                furnishing: 'Semi-Furnished',
+                area: '1,200 Sq. Ft.',
+                images: [
+                    './image/flat-luxury-bed.jpg',
+                    './image/flat-luxury-living.jpg',
+                    './image/flat-luxury-kitchen.jpg',
+                    './image/apartment-interior.jpg'
+                ],
+                angleTitles: [
+                    'Master Bedroom with Balcony View',
+                    'Contemporary Lounge & Dining',
+                    'Modern Fitted Kitchen',
+                    'Building Lobby & Reception'
+                ],
+                description: 'High-demand residential apartment in DHA Phase 8 overlooking the creek. Unbeatable security, landscaped community parks, and premium rental return potential.',
+                amenities: ['Creek Views', 'Community Club Access', 'Standby Power Backup', 'Gym & Swimming Pool', 'Covered Parking', 'Gated Security'],
+                agent: { name: 'Ayesha Khan', role: 'Senior Portfolio Advisor', agency: 'Capital Asset Advisory', phone: '+923129876543', avatar: './image/agent-female.jpg' }
+            },
+            {
+                id: 16,
+                title: 'Terrace Villa in Gated Community with Lush Garden',
+                city: 'Lahore',
+                location: 'Sukh Chayn Gardens, Canal Road, Lahore',
+                type: 'House',
+                purpose: 'Sale',
+                price: 42000000,
+                beds: 4,
+                baths: 5,
+                parking: 2,
+                yearBuilt: 2024,
+                furnishing: 'Semi-Furnished',
+                area: '10 Marla (250 Sq. Yds)',
+                images: [
+                    './image/villa-terrace.jpg',
+                    './image/villa-luxury.jpg',
+                    './image/house-interior-living.jpg',
+                    './image/house-modern.jpg'
+                ],
+                angleTitles: [
+                    'Spacious Terrace & Planters',
+                    'Villa Front Elevation',
+                    'Ground Floor Living Lounge',
+                    'Driveway & Private Garden'
+                ],
+                description: 'Elegantly appointed 10 Marla villa on Canal Road featuring custom Spanish wooden doors, solid teak flooring in bedrooms, double-height ceiling in lounge, and private landscaped garden.',
+                amenities: ['Landscaped Garden', 'Custom Teak Flooring', 'Canal Road Access', 'Underground Utilities', 'Community Security', '2-Car Garage'],
+                agent: { name: 'Muhammad Ibraheem', role: 'Principal Realtor', agency: 'Zameen Signature Realty', phone: '+923001234567', avatar: './image/agent-avatar1.png' }
+            }
+        ];
+
+        // Active State & Pagination
+        let currentModalProp = null;
+        let currentModalAngle = 0;
+        let isFavActive = false;
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let currentFilteredProperties = [];
+
+        // Elements
+        const grid = document.getElementById('propertyGrid');
+        const resultsCount = document.getElementById('resultsCount');
+        const paginationContainer = document.getElementById('pagination');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const filterCity = document.getElementById('filterCity');
+        const filterType = document.getElementById('filterType');
+        const filterPurpose = document.getElementById('filterPurpose');
+        const filterPrice = document.getElementById('filterPrice');
+        const filterBeds = document.getElementById('filterBeds');
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+
+        // Modal Elements
+        const modal = document.getElementById('propertyPreviewModal');
+        const modalMainImg = document.getElementById('previewModalMainImg');
+        const modalAngleText = document.getElementById('previewModalAngleText');
+        const modalThumbs = document.getElementById('previewModalThumbs');
+        const tokenPaymentModal = document.getElementById('tokenPaymentModal');
+
+        // Render Property Cards with Interactive 4-Angle Previews and Dynamic Pagination
+        const renderProperties = (properties) => {
+            currentFilteredProperties = properties;
+            grid.innerHTML = '';
+            
+            if (properties.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No properties found</h3>
+                        <p>Try adjusting your search or filters to find what you're looking for.</p>
+                        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="resetFilters()">Clear Filters</button>
+                    </div>
+                `;
+                resultsCount.innerHTML = `Showing 0 properties <span class="clear-filters-link" onclick="resetFilters()">Reset</span>`;
+                if (paginationContainer) paginationContainer.innerHTML = '';
+                return;
+            }
+
+            const totalPages = Math.ceil(properties.length / itemsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedItems = properties.slice(startIndex, startIndex + itemsPerPage);
+
+            paginatedItems.forEach((prop, index) => {
+                const specHtml = (prop.type === 'Plot' || (prop.type === 'Commercial' && prop.beds === 0)) ? 
+                    `<div class="spec-item"><i class="fas fa-ruler-combined"></i> ${prop.area}</div>` :
+                    `<div class="spec-item"><i class="fas fa-bed"></i> ${prop.beds} Beds</div>
+                     <div class="spec-item"><i class="fas fa-bath"></i> ${prop.baths} Baths</div>
+                     <div class="spec-item"><i class="fas fa-ruler-combined"></i> ${prop.area}</div>`;
+
+                const priceDisplay = prop.purpose === 'Rent' ? `PKR ${formatPKR(prop.price)} / mo` : `PKR ${formatPKR(prop.price)}`;
+                const mainImage = (prop.images && prop.images.length > 0) ? prop.images[0] : (prop.image || './image/house-modern.jpg');
+
+                const cardHtml = `
+                    <div class="property-card" style="animation-delay: ${index * 0.04}s">
+                        <!-- Clickable Image Trigger for 4-Angle Preview -->
+                        <div class="property-image-wrapper" onclick="openPropertyPreview(${prop.id})" title="Click to view 4-angle gallery & full specifications">
+                            <img src="${mainImage}" alt="${prop.title}" class="property-image" loading="lazy" onerror="this.src='./image/house-modern.jpg'">
+                            
+                            <!-- Hover Preview Trigger Overlay -->
+                            <div class="media-hover-overlay">
+                                <span class="media-preview-badge"><i class="fas fa-eye"></i> Preview 4 Angles</span>
+                            </div>
+
+                            <div class="property-photo-pill">
+                                <i class="fas fa-camera"></i> 4 Angles
+                            </div>
+
+                            <div class="property-badges">
+                                <span class="badge badge-purpose">${prop.purpose === 'Sale' ? 'For Sale' : 'For Rent'}</span>
+                                <span class="badge badge-type">${prop.type}</span>
+                            </div>
+                        </div>
+
+                        <div class="property-content">
+                            <div class="property-price">${priceDisplay}</div>
+                            <h3 class="property-title" onclick="openPropertyPreview(${prop.id})" title="${prop.title}">
+                                ${prop.title}
+                            </h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i> ${prop.location || prop.city}
+                            </div>
+                            <div class="property-specs">
+                                ${specHtml}
+                            </div>
+                            <div class="property-footer">
+                                <button onclick="openPropertyPreview(${prop.id})" class="btn btn-outline" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%;">
+                                    <i class="fas fa-images"></i> View 4 Angles
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+            
+            const startDisplay = startIndex + 1;
+            const endDisplay = Math.min(startIndex + itemsPerPage, properties.length);
+            resultsCount.innerHTML = `Showing ${startDisplay}–${endDisplay} of ${properties.length} properties ${properties.length < propertiesData.length ? '<span class="clear-filters-link" onclick="resetFilters()">Reset All</span>' : ''}`;
+
+            // Render Dynamic Pagination Controls
+            if (paginationContainer) {
+                if (totalPages <= 1) {
+                    paginationContainer.innerHTML = '';
+                } else {
+                    let pageBtnsHtml = `
+                        <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})" aria-label="Previous Page">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    `;
+                    for (let p = 1; p <= totalPages; p++) {
+                        pageBtnsHtml += `
+                            <button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>
+                        `;
+                    }
+                    pageBtnsHtml += `
+                        <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})" aria-label="Next Page">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    `;
+                    paginationContainer.innerHTML = pageBtnsHtml;
+                }
+            }
+        };
+
+        window.goToPage = (page) => {
+            const totalPages = Math.ceil(currentFilteredProperties.length / itemsPerPage) || 1;
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderProperties(currentFilteredProperties);
+            const targetSection = document.querySelector('.filters-section');
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        // Open 4-Angle Property Preview Modal
+        window.openPropertyPreview = (id) => {
+            const prop = propertiesData.find(p => p.id === id);
+            if (!prop) return;
+
+            currentModalProp = prop;
+            currentModalAngle = 0;
+            isFavActive = false;
+
+            // Basic details
+            document.getElementById('previewModalTitle').textContent = prop.title;
+            document.getElementById('previewModalLocation').textContent = prop.location || prop.city;
+            document.getElementById('previewModalPrice').textContent = prop.purpose === 'Rent' ? `PKR ${formatPKR(prop.price)} / month` : `PKR ${formatPKR(prop.price)}`;
+            document.getElementById('previewModalType').textContent = prop.type;
+            document.getElementById('previewModalId').textContent = `ZAM-${prop.id + 100}`;
+            document.getElementById('previewModalDesc').textContent = prop.description;
+
+            // Specs
+            document.getElementById('specModalArea').textContent = prop.area;
+            document.getElementById('specModalBeds').textContent = prop.beds > 0 ? `${prop.beds} Bedrooms` : 'N/A';
+            document.getElementById('specModalBaths').textContent = prop.baths > 0 ? `${prop.baths} Bathrooms` : 'N/A';
+            document.getElementById('specModalParking').textContent = prop.parking > 0 ? `${prop.parking} Covered Cars` : 'None';
+            document.getElementById('specModalYear').textContent = prop.yearBuilt || '2024';
+            document.getElementById('specModalFurnishing').textContent = prop.furnishing || 'Unfurnished';
+
+            // Amenities chips
+            const amenitiesContainer = document.getElementById('previewModalAmenities');
+            if (amenitiesContainer && prop.amenities) {
+                amenitiesContainer.innerHTML = prop.amenities.map(a => `
+                    <div class="modal-amenity-chip">
+                        <i class="fas fa-check-circle"></i> <span>${a}</span>
+                    </div>
+                `).join('');
+            }
+
+            // Agent details
+            if (prop.agent) {
+                document.getElementById('previewModalAgentName').textContent = prop.agent.name;
+                document.getElementById('previewModalAgentRole').textContent = prop.agent.role;
+                document.getElementById('previewModalAgentAgency').textContent = prop.agent.agency;
+                document.getElementById('previewModalAgentImg').src = prop.agent.avatar;
+                document.getElementById('previewModalPhoneBtn').href = `tel:${prop.agent.phone}`;
+                
+                const waBtn = document.getElementById('previewModalWaBtn');
+                if (waBtn) {
+                    waBtn.onclick = () => {
+                        const msg = encodeURIComponent(`Hello ${prop.agent.name}, I am interested in "${prop.title}" (ID: ZAM-${prop.id + 100}) listed for PKR ${formatPKR(prop.price)} on Zameen.`);
+                        window.open(`https://wa.me/923001234567?text=${msg}`, '_blank');
+                    };
+                }
+            }
+
+            // Update Gallery
+            updateModalGallery();
+
+            // Reset scroll position of detail body
+            const detailBody = modal.querySelector('.modal-detail-body');
+            if (detailBody) detailBody.scrollTop = 0;
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        // Update Modal 4-Angle Gallery
+        const updateModalGallery = () => {
+            if (!currentModalProp || !currentModalProp.images) return;
+            const images = currentModalProp.images;
+            const titles = currentModalProp.angleTitles || [];
+
+            // Main Image
+            modalMainImg.src = images[currentModalAngle];
+            const titleText = titles[currentModalAngle] || `Angle ${currentModalAngle + 1}`;
+            modalAngleText.textContent = `Angle ${currentModalAngle + 1}/${images.length}: ${titleText}`;
+
+            // Thumbnails
+            modalThumbs.innerHTML = images.map((img, idx) => `
+                <div class="gallery-thumb-wrapper ${idx === currentModalAngle ? 'active' : ''}" onclick="setModalAngle(${idx})" title="${titles[idx] || `Angle ${idx + 1}`}">
+                    <img src="${img}" class="gallery-thumb" alt="Angle ${idx + 1}" onerror="this.src='./image/house-modern.jpg'">
+                    <span class="gallery-thumb-num">${idx + 1}</span>
+                </div>
+            `).join('');
+        };
+
+        window.setModalAngle = (idx) => {
+            currentModalAngle = idx;
+            updateModalGallery();
+        };
+
+        window.nextModalAngle = () => {
+            if (!currentModalProp) return;
+            currentModalAngle = (currentModalAngle + 1) % currentModalProp.images.length;
+            updateModalGallery();
+        };
+
+        window.prevModalAngle = () => {
+            if (!currentModalProp) return;
+            currentModalAngle = (currentModalAngle - 1 + currentModalProp.images.length) % currentModalProp.images.length;
+            updateModalGallery();
+        };
+
+        window.closePropertyPreview = () => {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+
+        window.toggleModalFav = () => {
+            isFavActive = !isFavActive;
+            const btn = document.getElementById('modalFavBtn');
+            if (btn) {
+                btn.innerHTML = isFavActive ? '<i class="fas fa-heart" style="color:#ef4444;"></i> Saved' : '<i class="far fa-heart"></i> Save';
+            }
+        };
+
+        // Escrow Token Modal Functions
+        window.openTokenPaymentModal = () => {
+            tokenPaymentModal.classList.add('open');
+        };
+
+        window.closeTokenPaymentModal = () => {
+            tokenPaymentModal.classList.remove('open');
+        };
+
+        window.handleTokenSubmit = (e) => {
+            e.preventDefault();
+            const txnId = 'ZAM-TXN-' + Math.floor(100000 + Math.random() * 900000);
+            
+            // Persist to localStorage for Dashboard integration
+            try {
+                const storedBookings = JSON.parse(localStorage.getItem('zameen_bookings') || '[]');
+                const newBooking = {
+                    id: txnId,
+                    propertyId: currentModalProp ? ('ZAM-' + (currentModalProp.id + 100)) : 'ZAM-101',
+                    propertyTitle: currentModalProp ? currentModalProp.title : 'Prime Real Estate Listing',
+                    amount: 500000,
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    status: 'Held',
+                    buyerName: 'Online Buyer'
+                };
+                storedBookings.unshift(newBooking);
+                localStorage.setItem('zameen_bookings', JSON.stringify(storedBookings));
+            } catch (err) {
+                console.warn('Booking storage error:', err);
+            }
+
+            alert('🎉 Token Deposit Registered!\nYour transaction ID is ' + txnId + '.\nOur verified legal advisor will contact you within 15 minutes.');
+            closeTokenPaymentModal();
+        };
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closePropertyPreview();
+        });
+
+        tokenPaymentModal.addEventListener('click', (e) => {
+            if (e.target === tokenPaymentModal) closeTokenPaymentModal();
+        });
+
+        // Close on ESC key & Arrow navigation
+        document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('open')) {
+                if (e.key === 'Escape') closePropertyPreview();
+                if (e.key === 'ArrowRight') nextModalAngle();
+                if (e.key === 'ArrowLeft') prevModalAngle();
+            }
+            if (tokenPaymentModal.classList.contains('open') && e.key === 'Escape') {
+                closeTokenPaymentModal();
+            }
+        });
+
+        // Filter Logic
+        const filterProperties = () => {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const city = filterCity.value;
+            const type = filterType.value;
+            const purpose = filterPurpose.value;
+            const priceRange = filterPrice.value;
+            const beds = filterBeds.value;
+
+            let filtered = propertiesData.filter(prop => {
+                // Search text
+                const matchesSearch = !searchTerm || 
+                    prop.title.toLowerCase().includes(searchTerm) || 
+                    prop.city.toLowerCase().includes(searchTerm) ||
+                    (prop.location && prop.location.toLowerCase().includes(searchTerm));
+                
+                // Dropdowns
+                const matchesCity = city === 'All' || prop.city === city;
+                const matchesType = type === 'All' || prop.type === type;
+                const matchesPurpose = purpose === 'All' || prop.purpose === purpose;
+                
+                // Beds
+                let matchesBeds = true;
+                if (beds !== 'All') {
+                    if (beds === '4+') matchesBeds = prop.beds >= 4;
+                    else matchesBeds = prop.beds === parseInt(beds);
+                }
+
+                // Price
+                let matchesPrice = true;
+                if (priceRange !== 'All') {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    matchesPrice = prop.price >= min && prop.price <= max;
+                }
+
+                return matchesSearch && matchesCity && matchesType && matchesPurpose && matchesBeds && matchesPrice;
+            });
+
+            currentPage = 1;
+            renderProperties(filtered);
+        };
+        
+        window.resetFilters = () => {
+            currentPage = 1;
+            searchInput.value = '';
+            filterCity.value = 'All';
+            filterType.value = 'All';
+            filterPurpose.value = 'All';
+            filterPrice.value = 'All';
+            filterBeds.value = 'All';
+            filterProperties();
+        };
+
+        // Event Listeners
+        [filterCity, filterType, filterPurpose, filterPrice, filterBeds].forEach(el => {
+            el.addEventListener('change', filterProperties);
+        });
+        
+        searchBtn.addEventListener('click', filterProperties);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') filterProperties();
+        });
+
+        // Parse query params (e.g. properties.html?type=House or properties.html?purpose=sale)
+        const parseUrlParams = () => {
+            const params = new URLSearchParams(window.location.search);
+            const typeParam = params.get('type');
+            const purposeParam = params.get('purpose');
+            const cityParam = params.get('city');
+
+            if (typeParam && filterType) {
+                filterType.value = typeParam;
+            }
+            if (purposeParam && filterPurpose) {
+                filterPurpose.value = purposeParam.charAt(0).toUpperCase() + purposeParam.slice(1).toLowerCase();
+            }
+            if (cityParam && filterCity) {
+                filterCity.value = cityParam;
+            }
+        };
+
+        
+        // Mobile Nav Drawer functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavCloseBtn = document.getElementById('mobileNavCloseBtn');
+
+        const toggleMobileNav = (open) => {
+            if (mobileNavDrawer && mobileNavOverlay) {
+                const isOpen = open !== undefined ? open : !mobileNavDrawer.classList.contains('open');
+                mobileNavDrawer.classList.toggle('open', isOpen);
+                mobileNavOverlay.classList.toggle('open', isOpen);
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+            }
+        };
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => toggleMobileNav(true));
+        if (mobileNavCloseBtn) mobileNavCloseBtn.addEventListener('click', () => toggleMobileNav(false));
+        if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', () => toggleMobileNav(false));
+
+        // View toggles
+        gridViewBtn.addEventListener('click', () => {
+            grid.classList.remove('list-view');
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+        });
+        
+        listViewBtn.addEventListener('click', () => {
+            grid.classList.add('list-view');
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        });
+
+        // Initialize
+        parseUrlParams();
+        filterProperties();
+    </script>
+</body>
+</html>

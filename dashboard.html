@@ -1,0 +1,4148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Zameen</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons (SVG placeholders inside for styling, but linking font-awesome for ease) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: #0d5c3a;
+            --primary-light: #e8f5e9;
+            --primary-dark: #093c25;
+            
+            /* Surface & Background */
+            --surface: #ffffff;
+            --background: #f8fafc;
+            --neutral: #f1f5f9;
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+            
+            /* Text Colors */
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            --success-text: #065f46;
+            
+            --warning: #f59e0b;
+            --warning-bg: #fef3c7;
+            --warning-text: #92400e;
+            
+            --danger: #ef4444;
+            --danger-bg: #fee2e2;
+            --danger-text: #991b1b;
+            
+            --info: #3b82f6;
+            --info-bg: #dbeafe;
+            --info-text: #1e40af;
+            
+            /* UI Elements */
+            --border: #e2e8f0;
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-main);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 240px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 24px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--surface);
+            border-bottom: 1px solid var(--sidebar-hover);
+        }
+
+        .sidebar-brand span {
+            color: var(--primary-light);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 24px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--sidebar-hover);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-footer img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .user-info h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .user-info p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* --- Main Layout --- */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Top Header --- */
+        .top-header {
+            height: 64px;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .header-btn:hover {
+            color: var(--primary);
+        }
+        
+        
+        /* Notifications Dropdown */
+        .notifications-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 340px;
+            max-width: 90vw;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: fadeIn 0.2s ease forwards;
+        }
+
+        .notifications-dropdown.active {
+            display: flex;
+        }
+
+        .notif-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 700;
+            background: #f8fafc;
+        }
+
+        .notif-clear-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .notif-clear-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .notif-list {
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .notif-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .notif-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .notif-item.unread {
+            background-color: rgba(13, 92, 58, 0.04);
+        }
+
+        .notif-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .notif-content {
+            flex: 1;
+        }
+
+        .notif-text {
+            font-size: 0.8125rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .notif-time {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .badge-notify {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        /* --- Content Area --- */
+        .content-area {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            background-color: var(--background);
+        }
+        
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Metrics Grid --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background-color: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .metric-body {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-change {
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .change-up { color: var(--success); }
+        .change-down { color: var(--danger); }
+
+        /* --- Section Cards (Tables & Charts) --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .section-card {
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .section-action {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .section-action:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Tables --- */
+        .table-responsive {
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--neutral);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: #e2e8f0;
+        }
+        
+        th i {
+            margin-left: 4px;
+            color: var(--text-muted);
+        }
+
+        tbody tr:hover {
+            background-color: var(--background);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Custom Table Cells */
+        .property-cell {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .property-cell img {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+        }
+
+        .property-info h5 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .property-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-active { background-color: var(--success-bg); color: var(--success-text); }
+        .status-active::before { background-color: var(--success); }
+        
+        .status-pending { background-color: var(--warning-bg); color: var(--warning-text); }
+        .status-pending::before { background-color: var(--warning); }
+        
+        .status-sold { background-color: var(--danger-bg); color: var(--danger-text); }
+        .status-sold::before { background-color: var(--danger); }
+        
+        .status-new { background-color: var(--info-bg); color: var(--info-text); }
+        .status-new::before { background-color: var(--info); }
+        
+        .status-held { background-color: #f3e8ff; color: #6b21a8; }
+        .status-held::before { background-color: #9333ea; }
+
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-action:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+        
+        .btn-action.delete:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+            background-color: var(--danger-bg);
+        }
+
+        /* --- Performance Chart --- */
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            background-image: linear-gradient(var(--border) 1px, transparent 1px);
+            background-size: 100% 50px; /* grid lines */
+        }
+
+        .chart-bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            gap: 8px;
+            width: 40px;
+        }
+
+        .chart-bar {
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: 4px 4px 0 0;
+            transition: height 1s ease-out;
+            position: relative;
+            min-height: 5px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .chart-bar:hover {
+            background-color: var(--primary-dark);
+            cursor: pointer;
+        }
+        
+        .chart-bar:hover::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--sidebar-bg);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            z-index: 10;
+        }
+
+        .chart-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* --- Overlay for mobile --- */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 90;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 1024px) {
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .content-area {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid { grid-template-columns: 1fr; gap: 16px; }
+            .chart-container { background-size: 100% 40px; }
+            .chart-bar-group { width: 30px; }
+        }
+
+        /* --- DASHBOARD EXTENDED STYLES (Modals, Listings, Analytics, Settings) --- */
+        .db-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .db-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .db-modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 860px;
+            width: 100%;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .db-modal-overlay.active .db-modal-card {
+            transform: scale(1);
+        }
+        .db-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+        }
+        .db-modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .db-modal-title i {
+            color: var(--primary);
+        }
+        .db-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .db-modal-close:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+        .db-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .db-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #f8fafc;
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 640px) {
+            .form-grid-2, .form-grid-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        .form-group-db {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .form-label-db {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .form-label-db small {
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        .form-input-db, .form-select-db, .form-textarea-db {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input-db:focus, .form-select-db:focus, .form-textarea-db:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.12);
+            outline: none;
+        }
+        .form-textarea-db {
+            resize: vertical;
+            min-height: 90px;
+        }
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .preset-card {
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .preset-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+        .preset-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(13, 92, 58, 0.2);
+        }
+        .preset-card img {
+            width: 100%;
+            height: 75px;
+            object-fit: cover;
+            display: block;
+        }
+        .preset-card .preset-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px;
+            text-align: center;
+            background: #fff;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preset-card .preset-check {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .preset-card.selected .preset-check {
+            display: flex;
+        }
+        .amenities-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .amenity-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .amenity-chip:hover {
+            border-color: var(--primary);
+            background: #f1f8f4;
+        }
+        .amenity-chip.selected {
+            background: #e6f4ea;
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .amenity-chip i {
+            font-size: 0.75rem;
+        }
+        .btn-db-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(13, 92, 58, 0.2);
+        }
+        .btn-db-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-db-secondary {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-db-secondary:hover {
+            background: #f1f5f9;
+        }
+        .btn-db-danger {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-db-danger:hover {
+            background: #fecaca;
+        }
+
+        /* Listings Toolbar & Table styling */
+        .listings-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-pills-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-pill-db {
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-pill-db:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .filter-pill-db.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(13, 92, 58, 0.2);
+        }
+        .search-box-db {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            min-width: 260px;
+            flex: 1;
+            max-width: 360px;
+        }
+        .search-box-db i {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .search-box-db input {
+            border: none;
+            outline: none;
+            font-size: 0.85rem;
+            width: 100%;
+            color: var(--text-main);
+            background: transparent;
+        }
+        .property-cell-flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .property-cell-img {
+            width: 56px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .property-cell-title {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+        .property-cell-loc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 4-Angle Preview Modal */
+        .db-preview-card {
+            max-width: 920px;
+            width: 95%;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .db-gallery-container {
+            position: relative;
+            width: 100%;
+            height: clamp(380px, 58vh, 540px);
+            background: #0f172a;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+        }
+        .db-gallery-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: opacity 0.25s ease;
+        }
+        .db-gallery-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.65);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .db-gallery-arrow:hover {
+            background: rgba(13, 92, 58, 0.95);
+            transform: translateY(-50%) scale(1.08);
+        }
+        .db-gallery-arrow.left { left: 16px; }
+        .db-gallery-arrow.right { right: 16px; }
+        .db-angle-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .db-angle-badge span.pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+        }
+        .db-gallery-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(6px);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+        .db-gallery-close:hover {
+            background: #ef4444;
+            transform: scale(1.08);
+        }
+        .db-thumbs-strip {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 12px;
+            border-radius: 12px;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .db-thumb-item {
+            width: 54px;
+            height: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.65;
+            transition: all 0.2s;
+        }
+        .db-thumb-item:hover {
+            opacity: 0.9;
+        }
+        .db-thumb-item.active {
+            border-color: #22c55e;
+            opacity: 1;
+            transform: scale(1.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .db-thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .db-preview-info {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            background: #ffffff;
+        }
+        .db-spec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Analytics Styles */
+        .analytics-grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 900px) {
+            .analytics-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        .analytics-subcard {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+        }
+        .typology-row {
+            margin-bottom: 16px;
+        }
+        .typology-row:last-child {
+            margin-bottom: 0;
+        }
+        .typology-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .typology-bar-bg {
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .typology-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Settings Styles */
+        .settings-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .settings-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .settings-card-header i {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+        .settings-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Toast notifications */
+        #dbToast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+        #dbToast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #dbToast.success {
+            border-left: 5px solid #22c55e;
+        }
+        #dbToast.error {
+            border-left: 5px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay for Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="fa-solid fa-house-chimney"></i>
+            ZAMEEN<span>.</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-item active" data-tab="overview">
+                <i class="fa-solid fa-border-all"></i> Overview
+            </div>
+            <div class="nav-item" data-tab="listings">
+                <i class="fa-solid fa-building"></i> My Listings
+            </div>
+            <div class="nav-item" data-tab="inquiries">
+                <i class="fa-solid fa-envelope-open-text"></i> Inquiries
+            </div>
+            <div class="nav-item" data-tab="deposits">
+                <i class="fa-solid fa-money-bill-transfer"></i> Token Deposits
+            </div>
+            <div class="nav-item" data-tab="analytics">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </div>
+            <div class="nav-item" data-tab="settings">
+                <i class="fa-solid fa-gear"></i> Settings
+            </div>
+            <div style="margin: 24px 0; border-top: 1px solid var(--sidebar-hover);"></div>
+            <a href="zameen.html" class="nav-item" style="color: var(--text-muted);">
+                <i class="fa-solid fa-arrow-left"></i> Back to Site
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <img id="sidebarAvatarImg" src="./image/agent-avatar1.png" alt="User Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Agent+Ali&background=0d5c3a&color=fff'">
+            <div class="user-info">
+                <h4 id="sidebarUserName">Agent Ali</h4>
+                <p id="sidebarUserRole">Premium Seller</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <main class="main-wrapper">
+        <!-- Header -->
+        <header class="top-header">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 class="header-title" id="pageTitle">Dashboard Overview</h2>
+            </div>
+            
+            <div class="header-actions" style="position: relative;">
+                <div class="header-search-container" id="headerSearchContainer" style="display: flex; align-items: center; background: #f1f5f9; border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; gap: 8px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); font-size: 0.85rem;"></i>
+                    <input type="text" id="topHeaderSearchInput" placeholder="Quick search..." style="border: none; background: transparent; outline: none; font-size: 0.85rem; width: 150px; color: var(--text-main);" oninput="handleTopHeaderSearch(this.value)">
+                </div>
+                <button class="header-btn" id="notifBellBtn" title="Notifications" onclick="toggleNotificationsDropdown(event)">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge-notify" id="notifBadge">3</span>
+                </button>
+
+                <!-- Notifications Dropdown -->
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notif-header">
+                        <span>Notifications</span>
+                        <button class="notif-clear-btn" onclick="markAllNotificationsAsRead()">Mark all read</button>
+                    </div>
+                    <div class="notif-list" id="notifList">
+                        <div class="notif-item unread" onclick="switchTab('inquiries')">
+                            <div class="notif-icon-box"><i class="fa-regular fa-envelope"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-text"><strong>Ahmed Khan</strong> sent an inquiry regarding <em>Modern Family Home</em>.</div>
+                                <div class="notif-time">10 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-item unread" onclick="switchTab('deposits')">
+                            <div class="notif-icon-box" style="background:#ecfdf5; color:#10b981;"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-text">Escrow deposit of <strong>PKR 2,000,000</strong> confirmed for <em>Luxury Villa with Pool</em>.</div>
+                                <div class="notif-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-item unread" onclick="switchTab('listings')">
+                            <div class="notif-icon-box" style="background:#eff6ff; color:#3b82f6;"><i class="fa-solid fa-check"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-text">Listing <strong>Modern Family Home</strong> approved and verified.</div>
+                                <div class="notif-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            
+            <!-- OVERVIEW TAB -->
+            <div id="tab-overview" class="tab-pane active">
+                
+                <!-- Metrics Row -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Total Listings</span>
+                            <div class="metric-icon"><i class="fa-solid fa-house"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value counter" data-target="12">0</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +2 this month
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Active Views</span>
+                            <div class="metric-icon"><i class="fa-regular fa-eye"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value counter" data-target="3847">0</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +12.5% vs last week
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Inquiries</span>
+                            <div class="metric-icon"><i class="fa-regular fa-message"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value counter" data-target="28">0</div>
+                            <div class="metric-change change-down">
+                                <i class="fa-solid fa-arrow-trend-down"></i> -3 vs last week
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Token Deposits</span>
+                            <div class="metric-icon"><i class="fa-solid fa-wallet"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">PKR 4.2M</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +1.5M this month
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Recent Listings -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h3 class="section-title">Recent Listings</h3>
+                            <a href="javascript:void(0)" class="section-action" onclick="switchTab('listings')">View All</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="listingsTable">
+                                <thead>
+                                    <tr>
+                                        <th onclick="sortTable('listingsTable', 0)">Property <i class="fa-solid fa-sort"></i></th>
+                                        <th onclick="sortTable('listingsTable', 1)">Price <i class="fa-solid fa-sort"></i></th>
+                                        <th onclick="sortTable('listingsTable', 2)">Status <i class="fa-solid fa-sort"></i></th>
+                                        <th onclick="sortTable('listingsTable', 3)">Views <i class="fa-solid fa-sort"></i></th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="property-cell">
+                                                <img src="./image/house-modern.jpg" alt="Modern House" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100&q=80'">
+                                                <div class="property-info">
+                                                    <h5>Modern Family Home</h5>
+                                                    <p>DHA Phase 6, Lahore</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>PKR 45.5M</td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>1,204</td>
+                                        <td class="action-cell">
+                                            <button class="btn-action" title="Edit" onclick="openEditPropertyModal('PROP-101')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                            <button class="btn-action" title="View" onclick="previewListing('PROP-101')"><i class="fa-regular fa-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="property-cell">
+                                                <img src="./image/villa-luxury.jpg" alt="Luxury Villa" onerror="this.src='https://images.unsplash.com/photo-1613977257363-707ba9348227?w=100&q=80'">
+                                                <div class="property-info">
+                                                    <h5>Luxury Villa with Pool</h5>
+                                                    <p>Bahria Town, Islamabad</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>PKR 120M</td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td>856</td>
+                                        <td class="action-cell">
+                                            <button class="btn-action" title="Edit" onclick="openEditPropertyModal('PROP-102')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                            <button class="btn-action" title="View" onclick="previewListing('PROP-102')"><i class="fa-regular fa-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="property-cell">
+                                                <img src="./image/apartment-interior.jpg" alt="Apartment" onerror="this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=100&q=80'">
+                                                <div class="property-info">
+                                                    <h5>2-Bed Sea View Apartment</h5>
+                                                    <p>Clifton, Karachi</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>PKR 28M</td>
+                                        <td><span class="status-badge status-sold">Sold</span></td>
+                                        <td>2,451</td>
+                                        <td class="action-cell">
+                                            <button class="btn-action" title="Edit" onclick="openEditPropertyModal('PROP-103')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                            <button class="btn-action" title="View" onclick="previewListing('PROP-103')"><i class="fa-regular fa-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="property-cell">
+                                                <img src="./image/plot-land.jpg" alt="Plot" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=100&q=80'">
+                                                <div class="property-info">
+                                                    <h5>10 Marla Commercial Plot</h5>
+                                                    <p>Gulberg, Lahore</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>PKR 65M</td>
+                                        <td><span class="status-badge status-active">Active</span></td>
+                                        <td>342</td>
+                                        <td class="action-cell">
+                                            <button class="btn-action" title="Edit" onclick="openEditPropertyModal('PROP-104')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                            <button class="btn-action" title="View" onclick="previewListing('PROP-104')"><i class="fa-regular fa-eye"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Chart & Inquiries -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Chart -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3 class="section-title">Views Over Time</h3>
+                            </div>
+                            <div class="chart-container">
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="40%" data-val="1,200"></div>
+                                    <span class="chart-label">Oct</span>
+                                </div>
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="65%" data-val="2,100"></div>
+                                    <span class="chart-label">Nov</span>
+                                </div>
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="50%" data-val="1,650"></div>
+                                    <span class="chart-label">Dec</span>
+                                </div>
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="85%" data-val="2,900"></div>
+                                    <span class="chart-label">Jan</span>
+                                </div>
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="70%" data-val="2,300"></div>
+                                    <span class="chart-label">Feb</span>
+                                </div>
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" style="height: 0%" data-h="100%" data-val="3,847"></div>
+                                    <span class="chart-label">Mar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Inquiries -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3 class="section-title">Recent Inquiries</h3>
+                                <a href="javascript:void(0)" class="section-action" onclick="switchTab('inquiries')">View All</a>
+                            </div>
+                            <div style="padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                                    <div>
+                                        <p style="font-weight: 600; font-size: 0.875rem;">Ahmed Khan</p>
+                                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Re: Modern Family Home</p>
+                                    </div>
+                                    <span class="status-badge status-new">New</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                                    <div>
+                                        <p style="font-weight: 600; font-size: 0.875rem;">Sara Malik</p>
+                                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Re: Luxury Villa with Pool</p>
+                                    </div>
+                                    <span class="status-badge status-active">Replied</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <p style="font-weight: 600; font-size: 0.875rem;">Imran Javed</p>
+                                        <p style="font-size: 0.75rem; color: var(--text-secondary);">Re: 10 Marla Plot</p>
+                                    </div>
+                                    <span class="status-badge status-sold">Closed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> <!-- End Overview Tab -->
+
+            <!-- OTHER TABS (Placeholders for routing) -->
+            <!-- MY LISTINGS TAB -->
+            <div id="tab-listings" class="tab-pane">
+                <div class="section-card">
+                    <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 class="section-title">My Properties & Land Listings</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Manage, edit, publish, or track live performance of your property & land inventory.</p>
+                        </div>
+                        <button class="btn-db-primary" onclick="openAddPropertyModal()">
+                            <i class="fa-solid fa-plus"></i> Add New Property
+                        </button>
+                    </div>
+                    
+                    <!-- Filters & Search Toolbar -->
+                    <div class="listings-toolbar">
+                        <div class="filter-pills-group" id="listingFilterPills">
+                            <button class="filter-pill-db active" onclick="filterListings('all', this)">All (<span id="count-all">0</span>)</button>
+                            <button class="filter-pill-db" onclick="filterListings('active', this)">Active (<span id="count-active">0</span>)</button>
+                            <button class="filter-pill-db" onclick="filterListings('pending', this)">Pending (<span id="count-pending">0</span>)</button>
+                            <button class="filter-pill-db" onclick="filterListings('plots', this)">Plots & Land (<span id="count-plots">0</span>)</button>
+                            <button class="filter-pill-db" onclick="filterListings('sold', this)">Sold (<span id="count-sold">0</span>)</button>
+                        </div>
+                        <div class="search-box-db">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="listingSearchInput" placeholder="Search by title, city, area..." oninput="handleListingSearch(this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Listings Table -->
+                    <div class="table-responsive">
+                        <table id="myListingsTable">
+                            <thead>
+                                <tr>
+                                    <th>Property / Land</th>
+                                    <th>Typology & Purpose</th>
+                                    <th>Area / Size</th>
+                                    <th>Price (PKR)</th>
+                                    <th>Status</th>
+                                    <th>Inquiries / Views</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myListingsTableBody">
+                                <!-- Populated dynamically by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-inquiries" class="tab-pane">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">All Inquiries</h3>
+                    </div>
+                    <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 class="section-title">All Customer Inquiries</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Direct buyer and tenant inquiries submitted across your properties.</p>
+                        </div>
+                        <button class="btn-action" style="background: var(--surface); border: 1px solid var(--border); padding: 8px 14px;" onclick="renderInquiriesTable()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="inquiriesTable">
+                            <thead>
+                                <tr>
+                                    <th>Buyer Name</th>
+                                    <th>Property</th>
+                                    <th>Phone / WhatsApp</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inquiriesTableBody">
+                                <!-- Populated dynamically by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-deposits" class="tab-pane">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">Token Deposits (Escrow)</h3>
+                    </div>
+                    <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 class="section-title">Token Deposits (Escrow Ledger)</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Verified token deposits held in escrow pending legal deed completion.</p>
+                        </div>
+                        <button class="btn-action" style="background: var(--surface); border: 1px solid var(--border); padding: 8px 14px;" onclick="renderDepositsTable()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="depositsTable">
+                            <thead>
+                                <tr>
+                                    <th>Receipt / Txn ID</th>
+                                    <th>Property</th>
+                                    <th>Buyer Name</th>
+                                    <th>Escrow Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="depositsTableBody">
+                                <!-- Populated dynamically by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DEEP ANALYTICS TAB -->
+            <div id="tab-analytics" class="tab-pane">
+                <!-- Analytics KPI Metrics -->
+                <div class="metrics-grid" style="margin-bottom: 24px;">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Total Page Views</span>
+                            <div class="metric-icon"><i class="fa-regular fa-eye"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value counter" data-target="148290">0</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +18.4% this month
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Buyer Inquiries</span>
+                            <div class="metric-icon"><i class="fa-regular fa-comments"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value counter" data-target="342">0</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +14.2% this month
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Escrow Conversion</span>
+                            <div class="metric-icon"><i class="fa-solid fa-handshake"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">4.8%</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +1.2% this month
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Pipeline Escrow Value</span>
+                            <div class="metric-icon"><i class="fa-solid fa-vault"></i></div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value" style="font-size: 1.45rem;">PKR 64.5M</div>
+                            <div class="metric-change change-up">
+                                <i class="fa-solid fa-shield-halved"></i> Active in escrow
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6-Month Traffic & Inquiries Chart -->
+                <div class="section-card" style="margin-bottom: 24px;">
+                    <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 class="section-title">6-Month Traffic & Inquiries Growth</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Track monthly discovery views vs direct qualified inquiries.</p>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="chart-legend-item">
+                                <span class="chart-legend-dot" style="background: var(--primary);"></span> Listing Views
+                            </div>
+                            <div class="chart-legend-item">
+                                <span class="chart-legend-dot" style="background: #22c55e;"></span> Direct Inquiries
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 260px;">
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="45%" title="May Views: 18,200"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="30%" title="May Inquiries: 38"></div>
+                            <div class="chart-label">May</div>
+                        </div>
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="60%" title="Jun Views: 24,100"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="40%" title="Jun Inquiries: 52"></div>
+                            <div class="chart-label">Jun</div>
+                        </div>
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="55%" title="Jul Views: 21,800"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="48%" title="Jul Inquiries: 60"></div>
+                            <div class="chart-label">Jul</div>
+                        </div>
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="75%" title="Aug Views: 31,400"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="65%" title="Aug Inquiries: 78"></div>
+                            <div class="chart-label">Aug</div>
+                        </div>
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="85%" title="Sep Views: 38,900"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="78%" title="Sep Inquiries: 95"></div>
+                            <div class="chart-label">Sep</div>
+                        </div>
+                        <div class="chart-bar-group">
+                            <div class="chart-bar" style="background: var(--primary);" data-h="98%" title="Oct Views: 45,600"></div>
+                            <div class="chart-bar" style="background: #22c55e;" data-h="90%" title="Oct Inquiries: 114"></div>
+                            <div class="chart-label">Oct</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typology Performance & Demographics 2-Column Grid -->
+                <div class="analytics-grid-2">
+                    <div class="analytics-subcard">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Inventory Typology Volume</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Breakdown of demand and inquiries by asset category.</p>
+
+                        <div class="typology-row">
+                            <div class="typology-meta">
+                                <span>Houses & Luxury Villas</span>
+                                <span style="color: var(--primary);">42% (PKR 340M)</span>
+                            </div>
+                            <div class="typology-bar-bg">
+                                <div class="typology-bar-fill" style="width: 42%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+
+                        <div class="typology-row">
+                            <div class="typology-meta">
+                                <span>Residential & Commercial Plots</span>
+                                <span style="color: #0284c7;">35% (PKR 210M)</span>
+                            </div>
+                            <div class="typology-bar-bg">
+                                <div class="typology-bar-fill" style="width: 35%; background: #0284c7;"></div>
+                            </div>
+                        </div>
+
+                        <div class="typology-row">
+                            <div class="typology-meta">
+                                <span>Agricultural Land & Orchards</span>
+                                <span style="color: #16a34a;">15% (PKR 120M)</span>
+                            </div>
+                            <div class="typology-bar-bg">
+                                <div class="typology-bar-fill" style="width: 15%; background: #16a34a;"></div>
+                            </div>
+                        </div>
+
+                        <div class="typology-row">
+                            <div class="typology-meta">
+                                <span>Commercial Offices & Showrooms</span>
+                                <span style="color: #ca8a04;">8% (PKR 85M)</span>
+                            </div>
+                            <div class="typology-bar-bg">
+                                <div class="typology-bar-fill" style="width: 8%; background: #ca8a04;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-subcard">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Buyer Demographics</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Origin of verified inquiries & token offers.</p>
+
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class="fa-solid fa-earth-americas" style="color: var(--primary); font-size: 1.1rem;"></i>
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 0.85rem;">Overseas Pakistanis</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">UAE, UK, USA, Saudi Arabia</div>
+                                    </div>
+                                </div>
+                                <span style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">44%</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class="fa-solid fa-briefcase" style="color: #0284c7; font-size: 1.1rem;"></i>
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 0.85rem;">Local Real Estate Investors</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">High-net-worth portfolio buyers</div>
+                                    </div>
+                                </div>
+                                <span style="font-weight: 700; color: #0284c7; font-size: 0.95rem;">36%</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <i class="fa-solid fa-people-roof" style="color: #16a34a; font-size: 1.1rem;"></i>
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 0.85rem;">First-Time Home Buyers</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">End-user families & couples</div>
+                                    </div>
+                                </div>
+                                <span style="font-weight: 700; color: #16a34a; font-size: 0.95rem;">20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Performing Properties Table -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">Deep Analytics</h3>
+                        <h3 class="section-title">Top Performing Properties</h3>
+                    </div>
+                    <div style="padding: 40px; text-align: center; color: var(--text-muted);">Analytics Dashboard Construction...</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Typology</th>
+                                    <th>Total Views</th>
+                                    <th>Direct Inquiries</th>
+                                    <th>Conversion</th>
+                                    <th>Escrow Interest</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="property-cell-flex">
+                                            <img src="./image/villa-luxury.jpg" class="property-cell-img" alt="Villa">
+                                            <div>
+                                                <div class="property-cell-title">1 Kanal Spanish Luxury Villa</div>
+                                                <div class="property-cell-loc"><i class="fa-solid fa-location-dot"></i> DHA Phase 6, Lahore</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Villa</span></td>
+                                    <td><strong>42,100</strong></td>
+                                    <td>94</td>
+                                    <td><span style="color: #16a34a; font-weight: 600;">8.2%</span></td>
+                                    <td><span class="status-badge status-held">PKR 2,000,000 Held</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="property-cell-flex">
+                                            <img src="./image/plot-land.jpg" class="property-cell-img" alt="Plot">
+                                            <div>
+                                                <div class="property-cell-title">10 Marla Commercial Corner Plot</div>
+                                                <div class="property-cell-loc"><i class="fa-solid fa-location-dot"></i> Bahria Town Phase 7, Rawalpindi</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-pending">Commercial Plot</span></td>
+                                    <td><strong>38,400</strong></td>
+                                    <td>82</td>
+                                    <td><span style="color: #16a34a; font-weight: 600;">6.5%</span></td>
+                                    <td><span class="status-badge status-held">PKR 700,000 Held</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="property-cell-flex">
+                                            <img src="./image/farmhouse.jpg" class="property-cell-img" alt="Farmhouse">
+                                            <div>
+                                                <div class="property-cell-title">4 Kanal Luxury Farmhouse Retreat</div>
+                                                <div class="property-cell-loc"><i class="fa-solid fa-location-dot"></i> Bedian Road, Lahore</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge status-active">Farmhouse</span></td>
+                                    <td><strong>29,150</strong></td>
+                                    <td>61</td>
+                                    <td><span style="color: #16a34a; font-weight: 600;">5.8%</span></td>
+                                    <td><span class="status-badge status-active">Released</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ACCOUNT & PROPERTY SETTINGS TAB -->
+            <div id="tab-settings" class="tab-pane">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">Account Settings</h3>
+                    </div>
+                    <form id="dashboardSettingsForm" onsubmit="saveDashboardSettings(event)">
+                    
+                    <!-- Section 1: Realtor & Agent Credentials -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <i class="fa-solid fa-id-badge"></i>
+                            <div>
+                                <h3 class="settings-card-title">Realtor Profile & Credentials</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Manage your public seller identity, agency credentials, and contact badges.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="form-group-db">
+                                <label class="form-label-db">Agent Full Name</label>
+                                <input type="text" id="settingAgentName" class="form-input-db" value="Agent Ali" required>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Agency / Brokerage</label>
+                                <input type="text" id="settingAgencyName" class="form-input-db" value="Zameen Gold Certified Partners">
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Certification / License #</label>
+                                <input type="text" id="settingLicenseNo" class="form-input-db" value="PK-RE-2024-9982">
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="form-group-db">
+                                <label class="form-label-db">Official WhatsApp Phone</label>
+                                <input type="text" id="settingAgentPhone" class="form-input-db" value="+92 300 1234567" required>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Contact Email</label>
+                                <input type="email" id="settingAgentEmail" class="form-input-db" value="agent.ali@zameen.pk" required>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Primary Operating City</label>
+                                <select id="settingAgentCity" class="form-select-db">
+                                    <option value="Lahore" selected>Lahore</option>
+                                    <option value="Karachi">Karachi</option>
+                                    <option value="Islamabad">Islamabad</option>
+                                    <option value="Rawalpindi">Rawalpindi</option>
+                                    <option value="Peshawar">Peshawar</option>
+                                    <option value="Multan">Multan</option>
+                                    <option value="Faisalabad">Faisalabad</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Section 2: Property & Land Inventory Management Configuration -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <div>
+                                <h3 class="settings-card-title">Property & Land Management Defaults</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Configure unit standards, valuation benchmarks, and escrow rules.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="form-group-db">
+                                <label class="form-label-db">Default Land Measurement Unit</label>
+                                <select id="settingLandUnit" class="form-select-db">
+                                    <option value="Marla / Kanal" selected>Marla / Kanal (Punjab & KPK Standard)</option>
+                                    <option value="Square Yards">Square Yards (Sindh Standard)</option>
+                                    <option value="Square Feet">Square Feet (Apartments / Commercial)</option>
+                                    <option value="Acres">Acres / Murabba (Agricultural)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Currency Display Notation</label>
+                                <select id="settingCurrencyMode" class="form-select-db">
+                                    <option value="crore" selected>Crore & Lac (e.g. PKR 4.50 Crore)</option>
+                                    <option value="millions">Millions (e.g. PKR 45.0M)</option>
+                                    <option value="full">Exact Digits (e.g. PKR 45,000,000)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Escrow Token Deposit %</label>
+                                <select id="settingEscrowPercent" class="form-select-db">
+                                    <option value="5">5% of total property price</option>
+                                    <option value="10" selected>10% of total property price (Standard)</option>
+                                    <option value="15">15% of total property price</option>
+                                    <option value="20">20% of total property price</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group-db">
+                                <label class="form-label-db">Legal Title Verification Period</label>
+                                <select id="settingGraceDays" class="form-select-db">
+                                    <option value="3">3 Days (Expedited)</option>
+                                    <option value="7" selected>7 Days (Standard Escrow Inspection)</option>
+                                    <option value="14">14 Days (Extended Legal & Registry Review)</option>
+                                </select>
+                            </div>
+                            <div class="form-group-db">
+                                <label class="form-label-db">Auto-Sync New Listings to Main Site</label>
+                                <select id="settingAutoSync" class="form-select-db">
+                                    <option value="yes" selected>Yes, publish immediately to Zameen Marketplace</option>
+                                    <option value="draft">Save as internal draft first</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Notification & Security Preferences -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <h3 class="settings-card-title">Security & Real-Time Alerts</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Stay informed on buyer activity and protect high-value escrow transactions.</p>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-main);">Instant WhatsApp Buyer Alerts</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Receive real-time push message when a verified buyer inquires on your listing.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingAlertWhatsapp" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-main);">Token Deposit Escrow SMS Notification</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Get high-priority SMS confirmation whenever a buyer locks an escrow token deposit.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingAlertSms" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-main);">Two-Factor Authentication (2FA) for Token Release</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Require OTP code verification before releasing or refunding escrow balances.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="settingAlert2FA" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Action Buttons -->
+                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 14px; margin-bottom: 30px;">
+                        <button type="button" class="btn-db-secondary" onclick="resetDashboardSettings()">Reset to Defaults</button>
+                        <button type="submit" class="btn-db-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> Save All Settings
+                        </button>
+                    </div>
+
+                </form>
+                </div>
+            </div>
+
+        </div> <!-- End Content Area -->
+    </main>
+
+    <!-- ==========================================
+         ADD PROPERTY MODAL
+         ========================================== -->
+    <div class="db-modal-overlay" id="addPropertyModal" onclick="handleAddModalBackdropClick(event)">
+        <div class="db-modal-card">
+            <div class="db-modal-header">
+                <h3 class="db-modal-title"><i class="fa-solid fa-house-medical"></i> Add New Property / Land Listing</h3>
+                <button type="button" class="db-modal-close" onclick="closeAddPropertyModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="addPropertyForm" onsubmit="handleAddPropertySubmit(event)" style="display: flex; flex-direction: column; overflow: hidden; flex: 1;">
+                <div class="db-modal-body">
+                    
+                    <div class="form-group-db">
+                        <label class="form-label-db">Property Title * <small>Enter descriptive, appealing title</small></label>
+                        <input type="text" id="addPropTitle" class="form-input-db" placeholder="e.g. 1 Kanal Modern Spanish Villa with Swimming Pool" required>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="form-group-db">
+                            <label class="form-label-db">Typology *</label>
+                            <select id="addPropType" class="form-select-db" onchange="handleTypeChange(this.value, 'add')">
+                                <option value="House">Modern House</option>
+                                <option value="Villa">Luxury Villa</option>
+                                <option value="Residential Plot">Residential Plot</option>
+                                <option value="Commercial Plot">Commercial Plot</option>
+                                <option value="Agricultural Land">Agricultural Land</option>
+                                <option value="Apartment">Luxury Apartment</option>
+                                <option value="Penthouse">Executive Penthouse</option>
+                                <option value="Commercial Office">Commercial Office</option>
+                                <option value="Warehouse">Warehouse / Logistics</option>
+                                <option value="Farmhouse">Luxury Farmhouse</option>
+                            </select>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Listing Purpose *</label>
+                            <select id="addPropPurpose" class="form-select-db">
+                                <option value="For Sale">For Sale</option>
+                                <option value="For Rent">For Rent</option>
+                            </select>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Price (PKR) *</label>
+                            <input type="number" id="addPropPrice" class="form-input-db" placeholder="e.g. 45000000" min="100000" step="50000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group-db">
+                            <label class="form-label-db">City & Location *</label>
+                            <input type="text" id="addPropLocation" class="form-input-db" placeholder="e.g. Phase 6, DHA Lahore" required>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Area / Size * <small>e.g. 1 Kanal, 10 Marla, 4 Acres</small></label>
+                            <input type="text" id="addPropArea" class="form-input-db" placeholder="e.g. 1 Kanal (500 Sq. Yd.)" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2" id="addBedsBathsRow">
+                        <div class="form-group-db">
+                            <label class="form-label-db">Bedrooms</label>
+                            <select id="addPropBeds" class="form-select-db">
+                                <option value="0">0 (N/A for Plots / Land)</option>
+                                <option value="1">1 Bed</option>
+                                <option value="2">2 Beds</option>
+                                <option value="3">3 Beds</option>
+                                <option value="4">4 Beds</option>
+                                <option value="5" selected>5 Beds</option>
+                                <option value="6">6+ Beds</option>
+                            </select>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Bathrooms</label>
+                            <select id="addPropBaths" class="form-select-db">
+                                <option value="0">0 (N/A for Plots / Land)</option>
+                                <option value="1">1 Bath</option>
+                                <option value="2">2 Baths</option>
+                                <option value="3">3 Baths</option>
+                                <option value="4">4 Baths</option>
+                                <option value="5">5 Baths</option>
+                                <option value="6" selected>6 Baths</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Image / Gallery Preset Selection -->
+                    <div class="form-group-db">
+                        <label class="form-label-db">Select 4-Angle Photography Preset * <small>High-resolution local verified media</small></label>
+                        <div class="preset-grid" id="addPresetGrid">
+                            <div class="preset-card selected" onclick="selectImagePreset('modern-house', this, 'add')">
+                                <img src="./image/house-modern.jpg" alt="Modern House">
+                                <div class="preset-name">Modern House</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('luxury-villa', this, 'add')">
+                                <img src="./image/villa-luxury.jpg" alt="Luxury Villa">
+                                <div class="preset-name">Luxury Villa</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('plot-land', this, 'add')">
+                                <img src="./image/plot-land.jpg" alt="Plot / Land">
+                                <div class="preset-name">Plot & Land</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('farmland', this, 'add')">
+                                <img src="./image/farmland-aerial.jpg" alt="Farmland">
+                                <div class="preset-name">Farmland</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('penthouse', this, 'add')">
+                                <img src="./image/penthouse-luxury.jpg" alt="Penthouse">
+                                <div class="preset-name">Penthouse</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('commercial', this, 'add')">
+                                <img src="./image/office-commercial.jpg" alt="Office">
+                                <div class="preset-name">Office / Comm</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('warehouse', this, 'add')">
+                                <img src="./image/warehouse.jpg" alt="Warehouse">
+                                <div class="preset-name">Warehouse</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                            <div class="preset-card" onclick="selectImagePreset('farmhouse', this, 'add')">
+                                <img src="./image/farmhouse.jpg" alt="Farmhouse">
+                                <div class="preset-name">Farmhouse</div>
+                                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="addSelectedPreset" value="modern-house">
+                    </div>
+
+                    <!-- Amenities Selector -->
+                    <div class="form-group-db">
+                        <label class="form-label-db">Features & Amenities <small>Click to toggle</small></label>
+                        <div class="amenities-grid" id="addAmenitiesGrid">
+                            <span class="amenity-chip selected" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-bolt"></i> Electricity</span>
+                            <span class="amenity-chip selected" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-fire"></i> Sui Gas</span>
+                            <span class="amenity-chip selected" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-faucet-drip"></i> Water Supply</span>
+                            <span class="amenity-chip selected" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-shield-halved"></i> 24/7 Security</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-border-all"></i> Boundary Wall</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-road"></i> Corner Plot</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-tree"></i> Lawn / Garden</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-person-swimming"></i> Swimming Pool</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-car"></i> Dedicated Parking</span>
+                            <span class="amenity-chip" onclick="toggleAmenityChip(this)"><i class="fa-solid fa-sun"></i> Park Facing</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group-db">
+                        <label class="form-label-db">Detailed Description</label>
+                        <textarea id="addPropDesc" class="form-textarea-db" placeholder="Provide full architectural, registry, and location details of the property..."></textarea>
+                    </div>
+
+                </div>
+                <div class="db-modal-footer">
+                    <button type="button" class="btn-db-secondary" onclick="closeAddPropertyModal()">Cancel</button>
+                    <button type="submit" class="btn-db-primary"><i class="fa-solid fa-check"></i> Publish Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         EDIT PROPERTY MODAL
+         ========================================== -->
+    <div class="db-modal-overlay" id="editPropertyModal" onclick="handleEditModalBackdropClick(event)">
+        <div class="db-modal-card">
+            <div class="db-modal-header">
+                <h3 class="db-modal-title"><i class="fa-solid fa-pen-to-square"></i> Edit Property Listing</h3>
+                <button type="button" class="db-modal-close" onclick="closeEditPropertyModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="editPropertyForm" onsubmit="handleEditPropertySubmit(event)" style="display: flex; flex-direction: column; overflow: hidden; flex: 1;">
+                <input type="hidden" id="editPropId">
+                <div class="db-modal-body">
+                    
+                    <div class="form-group-db">
+                        <label class="form-label-db">Property Title *</label>
+                        <input type="text" id="editPropTitle" class="form-input-db" required>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="form-group-db">
+                            <label class="form-label-db">Typology *</label>
+                            <select id="editPropType" class="form-select-db" onchange="handleTypeChange(this.value, 'edit')">
+                                <option value="House">Modern House</option>
+                                <option value="Villa">Luxury Villa</option>
+                                <option value="Residential Plot">Residential Plot</option>
+                                <option value="Commercial Plot">Commercial Plot</option>
+                                <option value="Agricultural Land">Agricultural Land</option>
+                                <option value="Apartment">Luxury Apartment</option>
+                                <option value="Penthouse">Executive Penthouse</option>
+                                <option value="Commercial Office">Commercial Office</option>
+                                <option value="Warehouse">Warehouse / Logistics</option>
+                                <option value="Farmhouse">Luxury Farmhouse</option>
+                            </select>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Listing Purpose *</label>
+                            <select id="editPropPurpose" class="form-select-db">
+                                <option value="For Sale">For Sale</option>
+                                <option value="For Rent">For Rent</option>
+                            </select>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Price (PKR) *</label>
+                            <input type="number" id="editPropPrice" class="form-input-db" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group-db">
+                            <label class="form-label-db">City & Location *</label>
+                            <input type="text" id="editPropLocation" class="form-input-db" required>
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Area / Size *</label>
+                            <input type="text" id="editPropArea" class="form-input-db" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="form-group-db">
+                            <label class="form-label-db">Bedrooms</label>
+                            <input type="number" id="editPropBeds" class="form-input-db" min="0" max="20">
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Bathrooms</label>
+                            <input type="number" id="editPropBaths" class="form-input-db" min="0" max="20">
+                        </div>
+                        <div class="form-group-db">
+                            <label class="form-label-db">Status</label>
+                            <select id="editPropStatus" class="form-select-db">
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Sold">Sold</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-db">
+                        <label class="form-label-db">Detailed Description</label>
+                        <textarea id="editPropDesc" class="form-textarea-db"></textarea>
+                    </div>
+
+                </div>
+                <div class="db-modal-footer">
+                    <button type="button" class="btn-db-secondary" onclick="closeEditPropertyModal()">Cancel</button>
+                    <button type="submit" class="btn-db-primary"><i class="fa-solid fa-floppy-disk"></i> Update Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         4-ANGLE PROPERTY PREVIEW MODAL
+         ========================================== -->
+    <div class="db-modal-overlay" id="dbPreviewModal" onclick="handlePreviewModalBackdropClick(event)">
+        <div class="db-modal-card db-preview-card">
+            
+            <!-- Gallery Section with 100% Width & 70% Height Proportion -->
+            <div class="db-gallery-container">
+                <img id="dbGalleryMainImg" src="./image/house-modern.jpg" alt="Property Preview" class="db-gallery-main-img">
+                
+                <!-- Angle Badge -->
+                <div class="db-angle-badge">
+                    <span class="pulse-dot"></span>
+                    <span id="dbAngleLabel">Angle 1 of 4 • Front Elevation</span>
+                </div>
+
+                <!-- Close Button -->
+                <button type="button" class="db-gallery-close" onclick="closeDbPreviewModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <!-- Navigation Arrows -->
+                <button type="button" class="db-gallery-arrow left" onclick="prevDbAngle(event)">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="db-gallery-arrow right" onclick="nextDbAngle(event)">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <!-- Thumbnails Strip -->
+                <div class="db-thumbs-strip" id="dbGalleryThumbs">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Specs & Content Area -->
+            <div class="db-preview-info">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
+                    <div>
+                        <span id="dbPreviewStatusBadge" class="status-badge status-active" style="margin-bottom: 6px; display: inline-block;">Active</span>
+                        <h2 id="dbPreviewTitle" style="font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin: 0 0 4px 0;">1 Kanal Modern Spanish Villa</h2>
+                        <div id="dbPreviewLocation" style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> DHA Phase 6, Lahore
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Asking Price</div>
+                        <div id="dbPreviewPrice" style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">PKR 45,000,000</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+                    <div class="db-spec-pill"><i class="fa-solid fa-ruler-combined" style="color: var(--primary);"></i> <span id="dbPreviewArea">1 Kanal</span></div>
+                    <div class="db-spec-pill" id="dbPreviewBedsPill"><i class="fa-solid fa-bed" style="color: var(--primary);"></i> <span id="dbPreviewBeds">5 Beds</span></div>
+                    <div class="db-spec-pill" id="dbPreviewBathsPill"><i class="fa-solid fa-bath" style="color: var(--primary);"></i> <span id="dbPreviewBaths">6 Baths</span></div>
+                    <div class="db-spec-pill"><i class="fa-solid fa-tag" style="color: var(--primary);"></i> <span id="dbPreviewPurpose">For Sale</span></div>
+                    <div class="db-spec-pill"><i class="fa-solid fa-eye" style="color: var(--primary);"></i> <span id="dbPreviewViews">1,240 Views</span></div>
+                    <div class="db-spec-pill"><i class="fa-solid fa-comments" style="color: var(--primary);"></i> <span id="dbPreviewInquiries">18 Inquiries</span></div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Features & Verified Amenities</h4>
+                    <div class="amenities-grid" id="dbPreviewAmenities">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">Description</h4>
+                    <p id="dbPreviewDesc" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                        Exceptional modern property featuring high-grade fixtures, lush landscaping, and complete title verification under Zameen Escrow guarantee.
+                    </p>
+                </div>
+            </div>
+
+            <div class="db-modal-footer">
+                <button type="button" class="btn-db-secondary" onclick="closeDbPreviewModal()">Close Preview</button>
+                <button type="button" class="btn-db-primary" id="dbPreviewEditBtn" onclick=""><i class="fa-solid fa-pen-to-square"></i> Edit Listing</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Reply Inquiry Modal -->
+    <div class="db-modal-overlay" id="replyInquiryModal" onclick="if(event.target.id==='replyInquiryModal') closeReplyModal()">
+        <div class="db-modal-card" style="max-width: 550px;">
+            <div class="db-modal-header">
+                <div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0;">Reply to Inquiry</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;" id="replyModalSub">Direct lead communication</p>
+                </div>
+                <button class="db-modal-close" onclick="closeReplyModal()">✕</button>
+            </div>
+            <div class="db-modal-body" style="padding: 20px 24px;">
+                <div style="margin-bottom: 12px; font-size: 0.9rem;">
+                    <strong>Property:</strong> <span id="replyModalPropTitle" style="color: var(--primary); font-weight: 600;">Modern Family Home</span>
+                </div>
+                <div style="margin-bottom: 12px; font-size: 0.85rem; color: var(--text-muted);">
+                    <strong>Buyer:</strong> <span id="replyModalBuyerName" style="color: var(--text-main); font-weight: 600;">Ahmed Khan</span> 
+                    &nbsp;•&nbsp; <strong>Phone:</strong> <span id="replyModalPhone" style="color: var(--text-main);">+92 300 8472910</span>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Inquiry Note</label>
+                    <blockquote id="replyModalMsg" style="background: #f8fafc; border-left: 3px solid var(--primary); padding: 10px 14px; margin: 6px 0 0 0; font-size: 0.88rem; color: var(--text-main); border-radius: 0 4px 4px 0;">
+                        Is the price negotiable and can I inspect the property this Saturday afternoon?
+                    </blockquote>
+                </div>
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">Your Official Response</label>
+                    <textarea id="replyModalResponse" rows="4" style="width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: inherit; font-size: 0.875rem; resize: vertical;" placeholder="Type your response to the buyer here..."></textarea>
+                </div>
+            </div>
+            <div class="db-modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button type="button" class="btn-db-secondary" onclick="closeReplyModal()">Cancel</button>
+                <button type="button" class="btn-action" style="background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 6px; font-weight: 600;" onclick="sendWhatsAppReply()">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </button>
+                <button type="button" class="btn-db-primary" onclick="sendInAppReply()">
+                    <i class="fa-solid fa-paper-plane"></i> Send Reply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escrow Token Receipt Modal -->
+    <div class="db-modal-overlay" id="escrowReceiptModal" onclick="if(event.target.id==='escrowReceiptModal') closeEscrowReceiptModal()">
+        <div class="db-modal-card" style="max-width: 600px;">
+            <div class="db-modal-header" style="background: #f8fafc; border-bottom: 1px solid var(--border);">
+                <div>
+                    <span class="status-badge status-active" style="margin-bottom: 4px; display: inline-block;">✓ Official Escrow Certificate</span>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; margin: 0; color: var(--primary);">ZAMEEN ESCROW RECEIPT</h3>
+                </div>
+                <button class="db-modal-close" onclick="closeEscrowReceiptModal()">✕</button>
+            </div>
+            <div class="db-modal-body" style="padding: 24px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Transaction / Receipt ID</div>
+                        <div id="rcptTxnId" style="font-family: monospace; font-size: 0.95rem; font-weight: 700; color: var(--text-main);">ZAM-TXN-842901</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Issuance Date</div>
+                        <div id="rcptDate" style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">Oct 20, 2023</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Depositing Buyer</div>
+                        <div id="rcptBuyer" style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">Chaudhry Tariq</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Escrow Custody Status</div>
+                        <div id="rcptStatus" style="font-size: 0.9rem; font-weight: 700; color: #10b981;">HELD IN ESCROW</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Property Guaranteed</div>
+                    <div id="rcptProperty" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">Luxury Villa with Pool</div>
+                </div>
+
+                <div style="margin-bottom: 20px; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 14px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Token Escrow Amount</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Fully refundable during 7-day inspection grace window</div>
+                    </div>
+                    <div id="rcptAmount" style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">PKR 2,000,000</div>
+                </div>
+
+                <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; background: #e8f5e9; border: 1px solid #c8e6c9; padding: 10px 14px; border-radius: 6px;">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> 
+                    Protected under Zameen Verified Title & Escrow Protocol. Funds are only conveyed upon mutual buyer-seller biometric registration.
+                </div>
+            </div>
+            <div class="db-modal-footer">
+                <button type="button" class="btn-db-secondary" onclick="closeEscrowReceiptModal()">Close</button>
+                <button type="button" class="btn-db-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Official Receipt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="dbToast">
+        <i class="fa-solid fa-circle-check" id="dbToastIcon" style="font-size: 1.2rem; color: #22c55e;"></i>
+        <span id="dbToastMsg">Action completed successfully</span>
+    </div>
+
+        </div> <!-- End Content Area -->
+    </main>
+
+    <script>
+        // --- Sidebar & Mobile Toggle ---
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // --- Tab Switching ---
+        const navItems = document.querySelectorAll('.nav-item[data-tab]');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        const pageTitle = document.getElementById('pageTitle');
+
+        function switchTab(tabId) {
+            // Update Nav
+            navItems.forEach(item => item.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+            if(activeNav) {
+                activeNav.classList.add('active');
+                pageTitle.textContent = activeNav.textContent.trim() + " Dashboard";
+            }
+
+            // Update Content
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            // Close sidebar on mobile after click
+            if(window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                switchTab(item.getAttribute('data-tab'));
+            });
+        });
+
+        // --- Animate Counters on Load ---
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        counters.forEach(counter => {
+            const animate = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText.replace(/,/g, '');
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc).toLocaleString();
+                    setTimeout(animate, 10);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            };
+            animate();
+        });
+
+        // --- Animate Chart Bars on Load ---
+        setTimeout(() => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                bar.style.height = bar.getAttribute('data-h');
+            });
+        }, 300);
+
+        // --- Simple Table Sorter ---
+        function sortTable(tableId, n) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableId);
+            switching = true;
+            dir = "asc"; 
+            
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    
+                    let cmpX = x.innerHTML.toLowerCase();
+                    let cmpY = y.innerHTML.toLowerCase();
+                    
+                    // Basic numeric clean up if possible
+                    let numX = parseFloat(cmpX.replace(/[^0-9.-]+/g,""));
+                    let numY = parseFloat(cmpY.replace(/[^0-9.-]+/g,""));
+                    
+                    if (!isNaN(numX) && !isNaN(numY)) {
+                        cmpX = numX; cmpY = numY;
+                    }
+
+                    if (dir == "asc") {
+                        if (cmpX > cmpY) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (cmpX < cmpY) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount ++; 
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        // =====================================================================
+        // ZAMEEN DASHBOARD: MY LISTINGS, 4-ANGLE PREVIEWS, ANALYTICS & SETTINGS
+        // =====================================================================
+        const STORAGE_KEY_LISTINGS = 'zameen_dashboard_listings_v2';
+        const STORAGE_KEY_SETTINGS = 'zameen_dashboard_settings_v2';
+
+        // 4-Angle Presets using verified local images
+        const GALLERY_PRESETS = {
+            'modern-house': {
+                label: 'Modern House',
+                images: [
+                    './image/house-modern.jpg',
+                    './image/house-pool.jpg',
+                    './image/house-interior-living.jpg',
+                    './image/apartment-interior.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Modern Architectural Elevation',
+                    'Angle 2 of 4 • Private Swimming Pool & Deck',
+                    'Angle 3 of 4 • Open Living Lounge & Dining',
+                    'Angle 4 of 4 • Designer Master Bedroom Suite'
+                ]
+            },
+            'luxury-villa': {
+                label: 'Luxury Villa',
+                images: [
+                    './image/villa-luxury.jpg',
+                    './image/villa-terrace.jpg',
+                    './image/house-interior-living.jpg',
+                    './image/house-pool.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Front Elevation & Landscaped Entrance',
+                    'Angle 2 of 4 • Upper Terrace & Sky Lounge',
+                    'Angle 3 of 4 • Double-Height Atrium Living Room',
+                    'Angle 4 of 4 • Resort Pool & Patio Pergola'
+                ]
+            },
+            'plot-land': {
+                label: 'Plot & Land',
+                images: [
+                    './image/plot-land.jpg',
+                    './image/land-drone.webp',
+                    './image/commercial-towers.avif',
+                    './image/trust-valuation.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Demarcated Sector & Wide Road Facing',
+                    'Angle 2 of 4 • Aerial Drone Boundary Survey',
+                    'Angle 3 of 4 • Commercial Hub & Surrounding Towers',
+                    'Angle 4 of 4 • Approved Registry & Survey Benchmark'
+                ]
+            },
+            'farmland': {
+                label: 'Farmland & Orchard',
+                images: [
+                    './image/farmland-aerial.jpg',
+                    './image/orchard-land.jpg',
+                    './image/orchard-estate.jpg',
+                    './image/farmhouse.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • High-Altitude Drone Farm Overview',
+                    'Angle 2 of 4 • Irrigated Citrus Orchard Tracks',
+                    'Angle 3 of 4 • Main Driveway & Gate House',
+                    'Angle 4 of 4 • Country Farmhouse & Stable Grounds'
+                ]
+            },
+            'penthouse': {
+                label: 'Penthouse',
+                images: [
+                    './image/penthouse-luxury.jpg',
+                    './image/flat-luxury-living.jpg',
+                    './image/flat-luxury-bed.jpg',
+                    './image/flat-luxury-kitchen.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Panoramic Skyline Balcony View',
+                    'Angle 2 of 4 • Executive Marble Living Room',
+                    'Angle 3 of 4 • Master Suite with Coastal Panorama',
+                    'Angle 4 of 4 • Chef Kitchen with Island Counter'
+                ]
+            },
+            'commercial': {
+                label: 'Commercial Office',
+                images: [
+                    './image/office-commercial.jpg',
+                    './image/office-building.jpg',
+                    './image/office-boardroom.jpg',
+                    './image/commercial-showroom.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Corporate Glass Facade',
+                    'Angle 2 of 4 • Tower Perspective & Main Boulevard',
+                    'Angle 3 of 4 • Executive Conference Boardroom',
+                    'Angle 4 of 4 • Retail Ground Floor Showroom'
+                ]
+            },
+            'warehouse': {
+                label: 'Warehouse & Logistics',
+                images: [
+                    './image/warehouse.jpg',
+                    './image/warehouse-interior.jpg',
+                    './image/commercial-towers.avif',
+                    './image/trust-workspace.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Heavy Loading Bay & Yard',
+                    'Angle 2 of 4 • High-Ceiling Storage Floor',
+                    'Angle 3 of 4 • Industrial District Access',
+                    'Angle 4 of 4 • Operational Office Floor'
+                ]
+            },
+            'farmhouse': {
+                label: 'Farmhouse',
+                images: [
+                    './image/farmhouse.jpg',
+                    './image/farmland-aerial.jpg',
+                    './image/orchard-estate.jpg',
+                    './image/orchard-land.jpg'
+                ],
+                angles: [
+                    'Angle 1 of 4 • Luxury Farmhouse Villa Elevation',
+                    'Angle 2 of 4 • Aerial Estate Landscape',
+                    'Angle 3 of 4 • Tree-Lined Private Driveway',
+                    'Angle 4 of 4 • Lush Lawns & Plantation'
+                ]
+            }
+        };
+
+        // Seed data: 8 high-value Pakistani properties & lands
+        const DEFAULT_MY_LISTINGS = [
+            {
+                id: 'PROP-101',
+                title: '1 Kanal Modern Spanish Villa with Swimming Pool',
+                type: 'Villa',
+                purpose: 'For Sale',
+                price: 45000000,
+                location: 'DHA Phase 6, Lahore',
+                area: '1 Kanal (500 Sq. Yd.)',
+                beds: 5,
+                baths: 6,
+                status: 'Active',
+                views: 1240,
+                inquiries: 18,
+                preset: 'luxury-villa',
+                amenities: ['Electricity', 'Sui Gas', 'Water Supply', 'Swimming Pool', '24/7 Security', 'Lawn / Garden', 'Dedicated Parking'],
+                description: 'Magnificent 1 Kanal Spanish architecture villa designed with imported Italian porcelain tiles, double height lobby, designer German kitchen, and private temperature-controlled swimming pool in the prime sector of DHA Phase 6.'
+            },
+            {
+                id: 'PROP-102',
+                title: '10 Marla Prime Commercial Corner Plot',
+                type: 'Commercial Plot',
+                purpose: 'For Sale',
+                price: 28500000,
+                location: 'Bahria Town Phase 7, Rawalpindi',
+                area: '10 Marla (250 Sq. Yd.)',
+                beds: 0,
+                baths: 0,
+                status: 'Pending',
+                views: 890,
+                inquiries: 14,
+                preset: 'plot-land',
+                amenities: ['Electricity', 'Sui Gas', 'Water Supply', 'Corner Plot', '24/7 Security', 'Park Facing'],
+                description: 'High-yield commercial corner plot facing 100ft main boulevard, approved for G+5 commercial multi-story development. Clear verified registry and immediate possession available.'
+            },
+            {
+                id: 'PROP-103',
+                title: '4 Kanal Luxury Country Farmhouse Retreat',
+                type: 'Farmhouse',
+                purpose: 'For Sale',
+                price: 72000000,
+                location: 'Bedian Road, Lahore Cantt',
+                area: '4 Kanal (2,000 Sq. Yd.)',
+                beds: 4,
+                baths: 5,
+                status: 'Active',
+                views: 2150,
+                inquiries: 29,
+                preset: 'farmhouse',
+                amenities: ['Electricity', 'Water Supply', 'Boundary Wall', 'Lawn / Garden', 'Swimming Pool', '24/7 Security'],
+                description: 'Exquisite 4 Kanal country retreat featuring mature fruit trees, 60ft swimming pool, dedicated servant quarters, and solar microgrid backup. Ideal for luxury family living.'
+            },
+            {
+                id: 'PROP-104',
+                title: '2-Bed Sea Facing Executive Penthouse',
+                type: 'Penthouse',
+                purpose: 'For Sale',
+                price: 36000000,
+                location: 'Block 4, Clifton, Karachi',
+                area: '2,200 Sq. Ft.',
+                beds: 2,
+                baths: 3,
+                status: 'Active',
+                views: 1680,
+                inquiries: 22,
+                preset: 'penthouse',
+                amenities: ['Electricity', 'Sui Gas', 'Water Supply', '24/7 Security', 'Dedicated Parking'],
+                description: 'Exclusive top-floor corner penthouse with uninterrupted Arabian Sea vistas, designer fixtures, smart home automation, and 2 reserved basement parking slots.'
+            },
+            {
+                id: 'PROP-105',
+                title: '1 Kanal Residential Plot with Possession',
+                type: 'Residential Plot',
+                purpose: 'For Sale',
+                price: 32000000,
+                location: 'Sector C, Bahria Town, Lahore',
+                area: '1 Kanal',
+                beds: 0,
+                baths: 0,
+                status: 'Active',
+                views: 940,
+                inquiries: 11,
+                preset: 'plot-land',
+                amenities: ['Electricity', 'Sui Gas', 'Water Supply', '24/7 Security', 'Park Facing'],
+                description: 'Level solid land, on-ground plot facing 20-Kanal central park in Sector C. All utilities connected and ready for immediate home construction.'
+            },
+            {
+                id: 'PROP-106',
+                title: '5 Acre Agricultural Land with Tube-Well',
+                type: 'Agricultural Land',
+                purpose: 'For Sale',
+                price: 25000000,
+                location: 'Sheikhupura Road, Gujranwala',
+                area: '5 Acres (40 Kanal)',
+                beds: 0,
+                baths: 0,
+                status: 'Sold',
+                views: 740,
+                inquiries: 8,
+                preset: 'farmland',
+                amenities: ['Electricity', 'Water Supply', 'Boundary Wall'],
+                description: 'Highly fertile agricultural land with active deep tube well, high water table, and direct 30ft metalled link road access. Clean single-owner Fard and Registry.'
+            },
+            {
+                id: 'PROP-107',
+                title: 'Corporate Office Floor with Parking',
+                type: 'Commercial Office',
+                purpose: 'For Rent',
+                price: 450000,
+                location: 'Blue Area, Jinnah Avenue, Islamabad',
+                area: '3,800 Sq. Ft.',
+                beds: 0,
+                baths: 4,
+                status: 'Active',
+                views: 1120,
+                inquiries: 17,
+                preset: 'commercial',
+                amenities: ['Electricity', '24/7 Security', 'Dedicated Parking'],
+                description: 'Furnished A-grade corporate floor in leading tower with central HVAC, high-speed fiber connectivity, boardroom, 4 executive chambers, and 6 reserved parking spots.'
+            },
+            {
+                id: 'PROP-108',
+                title: '10,000 Sq. Ft. Logistics & Storage Warehouse',
+                type: 'Warehouse',
+                purpose: 'For Rent',
+                price: 650000,
+                location: 'SITE Industrial Area, Karachi',
+                area: '10,000 Sq. Ft.',
+                beds: 0,
+                baths: 2,
+                status: 'Pending',
+                views: 610,
+                inquiries: 9,
+                preset: 'warehouse',
+                amenities: ['Electricity', 'Water Supply', '24/7 Security', 'Boundary Wall'],
+                description: 'Industrial warehouse featuring 28ft clear eaves height, dual container trailer loading docks, heavy 3-phase industrial power load, and round-the-clock perimeter security.'
+            }
+        ];
+
+        // State
+        let myListings = [];
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let currentPreviewListing = null;
+        let currentPreviewAngle = 0;
+
+        // --- Helper: Format Price to PKR Crores / Lacs ---
+        function formatPkrPrice(amount) {
+            if (!amount || isNaN(amount)) return 'PKR 0';
+            const num = Number(amount);
+            if (num >= 10000000) {
+                const cr = (num / 10000000).toFixed(2);
+                return `PKR ${cr.replace(/\.00$/, '')} Crore`;
+            } else if (num >= 100000) {
+                const lac = (num / 100000).toFixed(2);
+                return `PKR ${lac.replace(/\.00$/, '')} Lac`;
+            } else {
+                return `PKR ${num.toLocaleString()}`;
+            }
+        }
+
+        // --- Load & Save Listings ---
+        function loadListingsFromStorage() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY_LISTINGS);
+                if (stored) {
+                    myListings = JSON.parse(stored);
+                } else {
+                    myListings = [...DEFAULT_MY_LISTINGS];
+                    localStorage.setItem(STORAGE_KEY_LISTINGS, JSON.stringify(myListings));
+                }
+
+                // Seamlessly merge user listings published on zameen.html
+                const customListings = JSON.parse(localStorage.getItem('zameen_user_listings') || '[]');
+                customListings.forEach(cl => {
+                    if (!myListings.some(ml => ml.id === cl.id)) {
+                        myListings.unshift({
+                            id: cl.id,
+                            title: cl.title,
+                            type: cl.type,
+                            purpose: cl.purpose === 'Sale' ? 'For Sale' : 'For Rent',
+                            price: cl.price,
+                            location: cl.location,
+                            area: cl.area,
+                            beds: cl.beds || 0,
+                            baths: cl.baths || 0,
+                            status: 'Active',
+                            views: 18,
+                            inquiries: 1,
+                            preset: 'luxury-villa',
+                            images: cl.images || ['./image/house-modern.jpg', './image/interior-living.jpg', './image/interior-kitchen.jpg', './image/house-night.jpg'],
+                            amenities: cl.amenities || ['Electricity', 'Water Supply', 'Security'],
+                            description: cl.description || 'Verified property listing created via Zameen platform.'
+                        });
+                    }
+                });
+            } catch (err) {
+                console.error("Storage error:", err);
+                myListings = [...DEFAULT_MY_LISTINGS];
+            }
+        }
+
+        function saveListingsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY_LISTINGS, JSON.stringify(myListings));
+            } catch (err) {
+                console.error("Storage write error:", err);
+            }
+        }
+
+        // --- Render Listings Table ---
+        function renderMyListings(filter = currentFilter, query = currentSearchQuery) {
+            currentFilter = filter;
+            currentSearchQuery = query.toLowerCase().trim();
+
+            const tbody = document.getElementById('myListingsTableBody');
+            if (!tbody) return;
+
+            // Compute counts
+            const totalCount = myListings.length;
+            const activeCount = myListings.filter(l => l.status === 'Active').length;
+            const pendingCount = myListings.filter(l => l.status === 'Pending').length;
+            const plotsCount = myListings.filter(l => l.type.toLowerCase().includes('plot') || l.type.toLowerCase().includes('land') || l.type.toLowerCase().includes('farm')).length;
+            const soldCount = myListings.filter(l => l.status === 'Sold').length;
+
+            const elAll = document.getElementById('count-all');
+            const elActive = document.getElementById('count-active');
+            const elPending = document.getElementById('count-pending');
+            const elPlots = document.getElementById('count-plots');
+            const elSold = document.getElementById('count-sold');
+
+            if (elAll) elAll.textContent = totalCount;
+            if (elActive) elActive.textContent = activeCount;
+            if (elPending) elPending.textContent = pendingCount;
+            if (elPlots) elPlots.textContent = plotsCount;
+            if (elSold) elSold.textContent = soldCount;
+
+            // Also update total listings in Overview KPI if exists
+            const overviewCounter = document.querySelector('.metric-value.counter[data-target="12"]');
+            if (overviewCounter) {
+                overviewCounter.setAttribute('data-target', totalCount);
+                overviewCounter.textContent = totalCount;
+            }
+
+            // Filter listings
+            let filtered = myListings.filter(item => {
+                // Category filter
+                let passCategory = true;
+                if (filter === 'active') passCategory = item.status === 'Active';
+                else if (filter === 'pending') passCategory = item.status === 'Pending';
+                else if (filter === 'sold') passCategory = item.status === 'Sold';
+                else if (filter === 'plots') passCategory = item.type.toLowerCase().includes('plot') || item.type.toLowerCase().includes('land') || item.type.toLowerCase().includes('farm');
+
+                // Search query
+                let passQuery = true;
+                if (currentSearchQuery) {
+                    passQuery = item.title.toLowerCase().includes(currentSearchQuery) ||
+                                item.location.toLowerCase().includes(currentSearchQuery) ||
+                                item.type.toLowerCase().includes(currentSearchQuery) ||
+                                item.area.toLowerCase().includes(currentSearchQuery);
+                }
+
+                return passCategory && passQuery;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
+                            <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 12px; color: var(--border);"></i>
+                            <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 4px;">No matching listings found</h4>
+                            <p style="font-size: 0.85rem;">Try adjusting your search criteria or add a new property listing.</p>
+                            <button class="btn-db-primary" style="margin-top: 14px;" onclick="openAddPropertyModal()">
+                                <i class="fa-solid fa-plus"></i> Add New Listing
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => {
+                const presetInfo = GALLERY_PRESETS[item.preset] || GALLERY_PRESETS['luxury-villa'];
+                const thumbImg = (item.images && item.images[0]) || presetInfo.images[0];
+                
+                let statusClass = 'status-active';
+                if (item.status === 'Pending') statusClass = 'status-pending';
+                else if (item.status === 'Sold') statusClass = 'status-sold';
+
+                const formattedPrice = formatPkrPrice(item.price);
+                const isLand = item.type.toLowerCase().includes('plot') || item.type.toLowerCase().includes('land');
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="property-cell-flex">
+                                <img src="${thumbImg}" class="property-cell-img" alt="${item.title}" onclick="previewListing('${item.id}')" style="cursor: pointer;" title="Click to view 4-angle gallery">
+                                <div>
+                                    <div class="property-cell-title" onclick="previewListing('${item.id}')" style="cursor: pointer;" title="${item.title}">
+                                        ${item.title}
+                                    </div>
+                                    <div class="property-cell-loc">
+                                        <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${item.location}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: var(--text-main); font-size: 0.88rem;">${item.type}</div>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">${item.purpose}</span>
+                        </td>
+                        <td>
+                            <strong style="font-size: 0.88rem; color: var(--text-main);">${item.area}</strong>
+                            ${!isLand && item.beds > 0 ? `<div style="font-size: 0.75rem; color: var(--text-muted);">${item.beds} Bed • ${item.baths} Bath</div>` : ''}
+                        </td>
+                        <td>
+                            <strong style="color: var(--primary); font-size: 0.95rem;">${formattedPrice}</strong>
+                        </td>
+                        <td>
+                            <span class="status-badge ${statusClass}" onclick="cycleListingStatus('${item.id}')" style="cursor: pointer;" title="Click to toggle status (Active / Pending / Sold)">
+                                ${item.status} <i class="fa-solid fa-arrows-rotate" style="font-size: 0.65rem; margin-left: 4px; opacity: 0.7;"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 2px;">
+                                <span><i class="fa-regular fa-comments" style="color: var(--primary); width: 14px;"></i> <strong>${item.inquiries}</strong> inquiries</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;"><i class="fa-regular fa-eye" style="width: 14px;"></i> ${item.views} views</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <button class="btn-action" onclick="previewListing('${item.id}')" title="Preview 4-Angle Gallery" style="color: var(--primary); margin-right: 4px;">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                            <button class="btn-action" onclick="openEditPropertyModal('${item.id}')" title="Edit Listing" style="color: #0284c7; margin-right: 4px;">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="btn-action" onclick="deleteListing('${item.id}')" title="Delete Listing" style="color: #ef4444;">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- Filter Pills Handling ---
+        function filterListings(cat, btn) {
+            document.querySelectorAll('#listingFilterPills .filter-pill-db').forEach(p => p.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderMyListings(cat, currentSearchQuery);
+        }
+
+        function handleListingSearch(val) {
+            renderMyListings(currentFilter, val);
+        }
+
+        // --- Handle Type Change (Plot vs House Beds/Baths) ---
+        function handleTypeChange(val, mode) {
+            const isLand = val.includes('Plot') || val.includes('Land') || val.includes('Commercial') || val.includes('Warehouse');
+            const row = document.getElementById(mode === 'add' ? 'addBedsBathsRow' : 'editPropBeds');
+            if (mode === 'add') {
+                const addRow = document.getElementById('addBedsBathsRow');
+                if (addRow) {
+                    if (isLand) {
+                        document.getElementById('addPropBeds').value = '0';
+                        document.getElementById('addPropBaths').value = '0';
+                        addRow.style.opacity = '0.5';
+                    } else {
+                        addRow.style.opacity = '1';
+                        if (document.getElementById('addPropBeds').value === '0') {
+                            document.getElementById('addPropBeds').value = '4';
+                            document.getElementById('addPropBaths').value = '4';
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- Image Preset Selection ---
+        function selectImagePreset(presetName, element, mode) {
+            const container = document.getElementById(mode === 'add' ? 'addPresetGrid' : '');
+            if (container) {
+                container.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+            }
+            if (element) element.classList.add('selected');
+            const hiddenInput = document.getElementById('addSelectedPreset');
+            if (hiddenInput) hiddenInput.value = presetName;
+        }
+
+        function toggleAmenityChip(el) {
+            el.classList.toggle('selected');
+        }
+
+        // --- ADD PROPERTY MODAL ---
+        function openAddPropertyModal() {
+            const modal = document.getElementById('addPropertyModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeAddPropertyModal() {
+            const modal = document.getElementById('addPropertyModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function handleAddModalBackdropClick(e) {
+            if (e.target.id === 'addPropertyModal') closeAddPropertyModal();
+        }
+
+        function handleAddPropertySubmit(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('addPropTitle').value.trim();
+            const type = document.getElementById('addPropType').value;
+            const purpose = document.getElementById('addPropPurpose').value;
+            const price = parseFloat(document.getElementById('addPropPrice').value);
+            const location = document.getElementById('addPropLocation').value.trim();
+            const area = document.getElementById('addPropArea').value.trim();
+            const beds = parseInt(document.getElementById('addPropBeds').value) || 0;
+            const baths = parseInt(document.getElementById('addPropBaths').value) || 0;
+            const preset = document.getElementById('addSelectedPreset').value || 'modern-house';
+            const desc = document.getElementById('addPropDesc').value.trim();
+
+            // Collect selected amenities
+            const amenities = [];
+            document.querySelectorAll('#addAmenitiesGrid .amenity-chip.selected').forEach(chip => {
+                amenities.push(chip.textContent.trim());
+            });
+
+            const newId = 'PROP-' + (Date.now().toString().slice(-4));
+            const presetData = GALLERY_PRESETS[preset] || GALLERY_PRESETS['luxury-villa'];
+
+            const newListing = {
+                id: newId,
+                title: title,
+                type: type,
+                purpose: purpose,
+                price: price,
+                location: location,
+                area: area,
+                beds: beds,
+                baths: baths,
+                status: 'Active',
+                views: 1,
+                inquiries: 0,
+                preset: preset,
+                images: [...presetData.images],
+                angles: [...presetData.angles],
+                amenities: amenities.length > 0 ? amenities : ['Electricity', 'Water Supply', '24/7 Security'],
+                description: desc || `Newly listed ${type} located in prime ${location}. Verified title documentation and instant escrow deposit enabled.`
+            };
+
+            // Add to front of array
+            myListings.unshift(newListing);
+            saveListingsToStorage();
+            renderMyListings('all');
+
+            // Reset form
+            document.getElementById('addPropertyForm').reset();
+            closeAddPropertyModal();
+
+            showToast(`Property "${title}" published successfully!`, 'success');
+        }
+
+        // --- EDIT PROPERTY MODAL ---
+        function openEditPropertyModal(id) {
+            const listing = myListings.find(item => item.id === id);
+            if (!listing) return;
+
+            document.getElementById('editPropId').value = listing.id;
+            document.getElementById('editPropTitle').value = listing.title;
+            document.getElementById('editPropType').value = listing.type;
+            document.getElementById('editPropPurpose').value = listing.purpose;
+            document.getElementById('editPropPrice').value = listing.price;
+            document.getElementById('editPropLocation').value = listing.location;
+            document.getElementById('editPropArea').value = listing.area;
+            document.getElementById('editPropBeds').value = listing.beds;
+            document.getElementById('editPropBaths').value = listing.baths;
+            document.getElementById('editPropStatus').value = listing.status;
+            document.getElementById('editPropDesc').value = listing.description || '';
+
+            const modal = document.getElementById('editPropertyModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeEditPropertyModal() {
+            const modal = document.getElementById('editPropertyModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function handleEditModalBackdropClick(e) {
+            if (e.target.id === 'editPropertyModal') closeEditPropertyModal();
+        }
+
+        function handleEditPropertySubmit(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editPropId').value;
+            const index = myListings.findIndex(item => item.id === id);
+            if (index === -1) return;
+
+            myListings[index].title = document.getElementById('editPropTitle').value.trim();
+            myListings[index].type = document.getElementById('editPropType').value;
+            myListings[index].purpose = document.getElementById('editPropPurpose').value;
+            myListings[index].price = parseFloat(document.getElementById('editPropPrice').value);
+            myListings[index].location = document.getElementById('editPropLocation').value.trim();
+            myListings[index].area = document.getElementById('editPropArea').value.trim();
+            myListings[index].beds = parseInt(document.getElementById('editPropBeds').value) || 0;
+            myListings[index].baths = parseInt(document.getElementById('editPropBaths').value) || 0;
+            myListings[index].status = document.getElementById('editPropStatus').value;
+            myListings[index].description = document.getElementById('editPropDesc').value.trim();
+
+            saveListingsToStorage();
+            renderMyListings(currentFilter);
+            closeEditPropertyModal();
+
+            showToast("Property listing details updated!", 'success');
+        }
+
+        // --- DELETE LISTING ---
+        function deleteListing(id) {
+            const listing = myListings.find(item => item.id === id);
+            if (!listing) return;
+
+            if (confirm(`Are you sure you want to remove "${listing.title}" from your listings?`)) {
+                myListings = myListings.filter(item => item.id !== id);
+                saveListingsToStorage();
+                renderMyListings(currentFilter);
+                showToast("Listing deleted from inventory.", 'success');
+            }
+        }
+
+        // --- TOGGLE / CYCLE STATUS ---
+        function cycleListingStatus(id) {
+            const listing = myListings.find(item => item.id === id);
+            if (!listing) return;
+
+            if (listing.status === 'Active') listing.status = 'Pending';
+            else if (listing.status === 'Pending') listing.status = 'Sold';
+            else listing.status = 'Active';
+
+            saveListingsToStorage();
+            renderMyListings(currentFilter);
+            showToast(`Listing status updated to ${listing.status}`, 'success');
+        }
+
+        // --- 4-ANGLE PREVIEW MODAL ---
+        function previewListing(id) {
+            const listing = myListings.find(item => item.id === id);
+            if (!listing) return;
+
+            currentPreviewListing = listing;
+            currentPreviewAngle = 0;
+
+            const presetData = GALLERY_PRESETS[listing.preset] || GALLERY_PRESETS['luxury-villa'];
+            const images = listing.images && listing.images.length === 4 ? listing.images : presetData.images;
+            const angleLabels = listing.angles && listing.angles.length === 4 ? listing.angles : presetData.angles;
+
+            // Populate Specs
+            document.getElementById('dbPreviewTitle').textContent = listing.title;
+            document.getElementById('dbPreviewPrice').textContent = formatPkrPrice(listing.price);
+            document.getElementById('dbPreviewLocation').innerHTML = `<i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${listing.location}`;
+            document.getElementById('dbPreviewArea').textContent = listing.area;
+            document.getElementById('dbPreviewPurpose').textContent = listing.purpose;
+            document.getElementById('dbPreviewViews').textContent = `${listing.views.toLocaleString()} Views`;
+            document.getElementById('dbPreviewInquiries').textContent = `${listing.inquiries} Inquiries`;
+            document.getElementById('dbPreviewDesc').textContent = listing.description || 'Verified property documentation and escrow enabled.';
+
+            // Status Badge
+            const statusBadge = document.getElementById('dbPreviewStatusBadge');
+            statusBadge.className = 'status-badge ' + (listing.status === 'Active' ? 'status-active' : listing.status === 'Pending' ? 'status-pending' : 'status-sold');
+            statusBadge.textContent = listing.status;
+
+            // Beds / Baths visibility
+            const isLand = listing.type.toLowerCase().includes('plot') || listing.type.toLowerCase().includes('land');
+            const bedsPill = document.getElementById('dbPreviewBedsPill');
+            const bathsPill = document.getElementById('dbPreviewBathsPill');
+            if (bedsPill && bathsPill) {
+                if (isLand || listing.beds === 0) {
+                    bedsPill.style.display = 'none';
+                    bathsPill.style.display = 'none';
+                } else {
+                    bedsPill.style.display = 'inline-flex';
+                    bathsPill.style.display = 'inline-flex';
+                    document.getElementById('dbPreviewBeds').textContent = `${listing.beds} Beds`;
+                    document.getElementById('dbPreviewBaths').textContent = `${listing.baths} Baths`;
+                }
+            }
+
+            // Populate Amenities
+            const amContainer = document.getElementById('dbPreviewAmenities');
+            if (amContainer) {
+                amContainer.innerHTML = (listing.amenities || ['Electricity', 'Water Supply', '24/7 Security']).map(am => `
+                    <span class="amenity-chip selected"><i class="fa-solid fa-circle-check"></i> ${am}</span>
+                `).join('');
+            }
+
+            // Edit button hook
+            const editBtn = document.getElementById('dbPreviewEditBtn');
+            if (editBtn) {
+                editBtn.onclick = () => {
+                    closeDbPreviewModal();
+                    openEditPropertyModal(listing.id);
+                };
+            }
+
+            // Build Thumbnails
+            const thumbsContainer = document.getElementById('dbGalleryThumbs');
+            if (thumbsContainer) {
+                thumbsContainer.innerHTML = images.map((imgSrc, idx) => `
+                    <div class="db-thumb-item ${idx === 0 ? 'active' : ''}" onclick="setDbAngle(${idx})" title="${angleLabels[idx]}">
+                        <img src="${imgSrc}" alt="Angle ${idx + 1}">
+                    </div>
+                `).join('');
+            }
+
+            updateDbGalleryDisplay();
+
+            const modal = document.getElementById('dbPreviewModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function updateDbGalleryDisplay() {
+            if (!currentPreviewListing) return;
+            const presetData = GALLERY_PRESETS[currentPreviewListing.preset] || GALLERY_PRESETS['luxury-villa'];
+            const images = currentPreviewListing.images && currentPreviewListing.images.length === 4 ? currentPreviewListing.images : presetData.images;
+            const angleLabels = currentPreviewListing.angles && currentPreviewListing.angles.length === 4 ? currentPreviewListing.angles : presetData.angles;
+
+            const mainImg = document.getElementById('dbGalleryMainImg');
+            const labelEl = document.getElementById('dbAngleLabel');
+
+            if (mainImg) {
+                mainImg.style.opacity = '0.4';
+                setTimeout(() => {
+                    mainImg.src = images[currentPreviewAngle];
+                    mainImg.style.opacity = '1';
+                }, 120);
+            }
+
+            if (labelEl) {
+                labelEl.textContent = angleLabels[currentPreviewAngle] || `Angle ${currentPreviewAngle + 1} of 4`;
+            }
+
+            // Update active thumbnail
+            document.querySelectorAll('#dbGalleryThumbs .db-thumb-item').forEach((item, idx) => {
+                if (idx === currentPreviewAngle) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+
+        function nextDbAngle(e) {
+            if (e) e.stopPropagation();
+            currentPreviewAngle = (currentPreviewAngle + 1) % 4;
+            updateDbGalleryDisplay();
+        }
+
+        function prevDbAngle(e) {
+            if (e) e.stopPropagation();
+            currentPreviewAngle = (currentPreviewAngle - 1 + 4) % 4;
+            updateDbGalleryDisplay();
+        }
+
+        function setDbAngle(index) {
+            currentPreviewAngle = index;
+            updateDbGalleryDisplay();
+        }
+
+        function closeDbPreviewModal() {
+            const modal = document.getElementById('dbPreviewModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function handlePreviewModalBackdropClick(e) {
+            if (e.target.id === 'dbPreviewModal') closeDbPreviewModal();
+        }
+
+        const DEFAULT_SETTINGS = {
+            agentName: 'Agent Ali',
+            agencyName: 'Zameen Gold Certified Partners',
+            licenseNo: 'PK-RE-2024-9982',
+            agentPhone: '+92 300 1234567',
+            agentEmail: 'agent.ali@zameen.pk',
+            agentCity: 'Lahore',
+            landUnit: 'Marla / Kanal',
+            currencyMode: 'crore',
+            escrowPercent: '10',
+            graceDays: '7',
+            autoSync: 'yes',
+            alertWhatsapp: true,
+            alertSms: true,
+            alert2FA: true
+        };
+
+        // --- DASHBOARD SETTINGS MANAGEMENT ---
+        function loadDashboardSettings() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY_SETTINGS);
+                const settings = stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+
+                if (document.getElementById('settingAgentName')) document.getElementById('settingAgentName').value = settings.agentName || DEFAULT_SETTINGS.agentName;
+                if (document.getElementById('settingAgencyName')) document.getElementById('settingAgencyName').value = settings.agencyName || DEFAULT_SETTINGS.agencyName;
+                if (document.getElementById('settingLicenseNo')) document.getElementById('settingLicenseNo').value = settings.licenseNo || DEFAULT_SETTINGS.licenseNo;
+                if (document.getElementById('settingAgentPhone')) document.getElementById('settingAgentPhone').value = settings.agentPhone || DEFAULT_SETTINGS.agentPhone;
+                if (document.getElementById('settingAgentEmail')) document.getElementById('settingAgentEmail').value = settings.agentEmail || DEFAULT_SETTINGS.agentEmail;
+                if (document.getElementById('settingAgentCity')) document.getElementById('settingAgentCity').value = settings.agentCity || DEFAULT_SETTINGS.agentCity;
+                if (document.getElementById('settingLandUnit')) document.getElementById('settingLandUnit').value = settings.landUnit || DEFAULT_SETTINGS.landUnit;
+                if (document.getElementById('settingCurrencyMode')) document.getElementById('settingCurrencyMode').value = settings.currencyMode || DEFAULT_SETTINGS.currencyMode;
+                if (document.getElementById('settingEscrowPercent')) document.getElementById('settingEscrowPercent').value = settings.escrowPercent || DEFAULT_SETTINGS.escrowPercent;
+                if (document.getElementById('settingGraceDays')) document.getElementById('settingGraceDays').value = settings.graceDays || DEFAULT_SETTINGS.graceDays;
+                if (document.getElementById('settingAutoSync')) document.getElementById('settingAutoSync').value = settings.autoSync || DEFAULT_SETTINGS.autoSync;
+
+                if (document.getElementById('settingAlertWhatsapp')) document.getElementById('settingAlertWhatsapp').checked = settings.alertWhatsapp !== false;
+                if (document.getElementById('settingAlertSms')) document.getElementById('settingAlertSms').checked = settings.alertSms !== false;
+                if (document.getElementById('settingAlert2FA')) document.getElementById('settingAlert2FA').checked = settings.alert2FA !== false;
+
+                // Update sidebar profile
+                updateSidebarProfile(settings.agentName || DEFAULT_SETTINGS.agentName, settings.agencyName || DEFAULT_SETTINGS.agencyName);
+            } catch (err) {
+                console.error("Error loading settings:", err);
+            }
+        }
+
+        function updateSidebarProfile(name, agency) {
+            const userNameEl = document.getElementById('sidebarUserName');
+            const userRoleEl = document.getElementById('sidebarUserRole');
+            if (userNameEl && name) userNameEl.textContent = name;
+            if (userRoleEl && agency) userRoleEl.textContent = agency.includes('Gold') ? 'Premium Gold Realtor' : 'Certified Seller';
+        }
+
+        function saveDashboardSettings(e) {
+            e.preventDefault();
+
+            const settings = {
+                agentName: document.getElementById('settingAgentName').value.trim(),
+                agencyName: document.getElementById('settingAgencyName').value.trim(),
+                licenseNo: document.getElementById('settingLicenseNo').value.trim(),
+                agentPhone: document.getElementById('settingAgentPhone').value.trim(),
+                agentEmail: document.getElementById('settingAgentEmail').value.trim(),
+                agentCity: document.getElementById('settingAgentCity').value,
+                landUnit: document.getElementById('settingLandUnit').value,
+                currencyMode: document.getElementById('settingCurrencyMode').value,
+                escrowPercent: document.getElementById('settingEscrowPercent').value,
+                graceDays: document.getElementById('settingGraceDays').value,
+                autoSync: document.getElementById('settingAutoSync').value,
+                alertWhatsapp: document.getElementById('settingAlertWhatsapp').checked,
+                alertSms: document.getElementById('settingAlertSms').checked,
+                alert2FA: document.getElementById('settingAlert2FA').checked
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(settings));
+                updateSidebarProfile(settings.agentName, settings.agencyName);
+                showToast("Realtor & Property Settings Saved Successfully!", 'success');
+            } catch (err) {
+                console.error("Settings save error:", err);
+                showToast("Could not save settings.", 'error');
+            }
+        }
+
+        function resetDashboardSettings() {
+            if (confirm("Reset all settings to default system configuration?")) {
+                localStorage.removeItem(STORAGE_KEY_SETTINGS);
+                loadDashboardSettings();
+                showToast("Settings reset to system defaults.", 'success');
+            }
+        }
+
+        // --- TOAST NOTIFICATION ---
+        let toastTimeout = null;
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('dbToast');
+            const toastMsg = document.getElementById('dbToastMsg');
+            const toastIcon = document.getElementById('dbToastIcon');
+            if (!toast) return;
+
+            if (toastMsg) toastMsg.textContent = msg;
+
+            if (toastIcon) {
+                if (type === 'error') {
+                    toastIcon.className = 'fa-solid fa-circle-exclamation';
+                    toastIcon.style.color = '#ef4444';
+                    toast.className = 'error';
+                } else {
+                    toastIcon.className = 'fa-solid fa-circle-check';
+                    toastIcon.style.color = '#22c55e';
+                    toast.className = 'success';
+                }
+            }
+
+            toast.classList.add('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3200);
+        }
+
+        // --- NOTIFICATIONS MANAGEMENT ---
+        function toggleNotificationsDropdown(e) {
+            if (e) e.stopPropagation();
+            const dd = document.getElementById('notificationsDropdown');
+            if (dd) dd.classList.toggle('active');
+        }
+
+        function markAllNotificationsAsRead() {
+            document.querySelectorAll('#notifList .notif-item').forEach(item => {
+                item.classList.remove('unread');
+            });
+            const badge = document.getElementById('notifBadge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+            showToast('All notifications marked as read', 'success');
+        }
+
+        document.addEventListener('click', (e) => {
+            const dd = document.getElementById('notificationsDropdown');
+            const bell = document.getElementById('notifBellBtn');
+            if (dd && dd.classList.contains('active')) {
+                if (!dd.contains(e.target) && (!bell || !bell.contains(e.target))) {
+                    dd.classList.remove('active');
+                }
+            }
+        });
+
+        // --- TOP HEADER SEARCH ---
+        function handleTopHeaderSearch(val) {
+            const query = val.toLowerCase().trim();
+            const activeTab = document.querySelector('.tab-pane.active');
+            if (activeTab && activeTab.id === 'tab-listings') {
+                const searchInput = document.getElementById('listingSearchInput');
+                if (searchInput) searchInput.value = val;
+                renderMyListings(currentFilter, query);
+            } else if (activeTab && activeTab.id === 'tab-inquiries') {
+                filterInquiries(query);
+            } else if (activeTab && activeTab.id === 'tab-deposits') {
+                filterDeposits(query);
+            } else {
+                switchTab('listings');
+                const searchInput = document.getElementById('listingSearchInput');
+                if (searchInput) searchInput.value = val;
+                renderMyListings('all', query);
+            }
+        }
+
+        // --- INQUIRIES & ESCROW DEPOSITS MANAGEMENT ---
+        const DEFAULT_INQUIRIES = [
+            {
+                id: 'INQ-1001',
+                name: 'Ahmed Khan',
+                property: 'Modern Family Home',
+                phone: '+92 300 8472910',
+                email: 'ahmed.khan@gmail.com',
+                date: 'Oct 24, 2023',
+                status: 'New',
+                message: 'Is the price negotiable and can I inspect the property this Saturday afternoon?'
+            },
+            {
+                id: 'INQ-1002',
+                name: 'Sara Malik',
+                property: 'Luxury Villa with Pool',
+                phone: '+92 321 9845214',
+                email: 'sara.malik@outlook.com',
+                date: 'Oct 23, 2023',
+                status: 'Responded',
+                message: 'Interested in making a formal token offer subject to registry verification.'
+            },
+            {
+                id: 'INQ-1003',
+                name: 'Imran Javed',
+                property: '10 Marla Commercial Plot',
+                phone: '+92 333 4512987',
+                email: 'imran.javed@bizmail.pk',
+                date: 'Oct 21, 2023',
+                status: 'Closed',
+                message: 'Looking for payment schedule over 6 months. Please share LDA map copy.'
+            }
+        ];
+
+        const DEFAULT_DEPOSITS = [
+            {
+                id: 'ZAM-TXN-842901',
+                property: 'Luxury Villa with Pool',
+                buyer: 'Chaudhry Tariq',
+                phone: '+92 301 5558899',
+                amount: 2000000,
+                date: 'Oct 20, 2023',
+                status: 'Held'
+            },
+            {
+                id: 'ZAM-TXN-771045',
+                property: '2-Bed Sea View Apartment',
+                buyer: 'Dr. Fatima Noor',
+                phone: '+92 334 1122334',
+                amount: 1500000,
+                date: 'Oct 15, 2023',
+                status: 'Released'
+            },
+            {
+                id: 'ZAM-TXN-639210',
+                property: '10 Marla Commercial Plot',
+                buyer: 'Mian Bilal',
+                phone: '+92 312 4477889',
+                amount: 700000,
+                date: 'Oct 10, 2023',
+                status: 'Refunded'
+            }
+        ];
+
+        let allInquiries = [];
+        let allDeposits = [];
+        let activeInquiryIndex = null;
+
+        function renderInquiriesTable(query = '') {
+            const tbody = document.getElementById('inquiriesTableBody');
+            if (!tbody) return;
+
+            let stored = [];
+            try {
+                stored = JSON.parse(localStorage.getItem('zameen_inquiries') || '[]');
+            } catch(e) {}
+
+            const merged = [...stored.map((inq, i) => ({
+                id: inq.id || ('INQ-' + (2000 + i)),
+                name: inq.name || inq.buyerName || 'Prospective Buyer',
+                property: inq.propertyTitle || inq.property || 'Prime Listing',
+                phone: inq.phone || inq.contact || '+92 300 1234567',
+                email: inq.email || 'client@zameen.pk',
+                date: inq.date || 'Recent',
+                status: inq.status || 'New',
+                message: inq.message || inq.note || 'Interested in property inspection and escrow reservation.'
+            })), ...DEFAULT_INQUIRIES];
+
+            allInquiries = merged;
+
+            const filtered = query ? merged.filter(inq => 
+                inq.name.toLowerCase().includes(query) || 
+                inq.property.toLowerCase().includes(query) ||
+                inq.phone.toLowerCase().includes(query)
+            ) : merged;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-muted);">No inquiries found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((inq, idx) => {
+                const statusClass = inq.status === 'New' ? 'status-new' : (inq.status === 'Responded' ? 'status-active' : 'status-sold');
+                return `
+                    <tr>
+                        <td><strong>${inq.name}</strong></td>
+                        <td>${inq.property}</td>
+                        <td>
+                            <a href="tel:${inq.phone}" style="color:var(--text-main); font-weight:500;">
+                                <i class="fa-solid fa-phone" style="color:var(--primary); font-size:0.75rem;"></i> ${inq.phone}
+                            </a>
+                        </td>
+                        <td>${inq.date}</td>
+                        <td><span class="status-badge ${statusClass}">${inq.status}</span></td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <button class="btn-action" style="color:var(--primary); font-weight:600;" title="Reply via WhatsApp" onclick="openReplyModal(${idx})">
+                                <i class="fa-solid fa-reply"></i> Reply
+                            </button>
+                            <button class="btn-action" style="color:#0284c7;" title="View Details" onclick="viewInquiryDetail(${idx})">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterInquiries(query) {
+            renderInquiriesTable(query);
+        }
+
+        function renderDepositsTable(query = '') {
+            const tbody = document.getElementById('depositsTableBody');
+            if (!tbody) return;
+
+            let stored = [];
+            try {
+                stored = JSON.parse(localStorage.getItem('zameen_bookings') || '[]');
+            } catch(e) {}
+
+            const merged = [...stored.map(b => ({
+                id: b.id || ('ZAM-TXN-' + Math.floor(100000 + Math.random() * 900000)),
+                property: b.propertyTitle || 'Selected Property',
+                buyer: b.buyerName || 'Online Verified Buyer',
+                amount: b.amount || 500000,
+                date: b.date || 'Recent',
+                status: b.status || 'Held'
+            })), ...DEFAULT_DEPOSITS];
+
+            allDeposits = merged;
+
+            const filtered = query ? merged.filter(dep =>
+                dep.id.toLowerCase().includes(query) ||
+                dep.property.toLowerCase().includes(query) ||
+                dep.buyer.toLowerCase().includes(query)
+            ) : merged;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--text-muted);">No token deposits found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((dep, idx) => {
+                let statusClass = 'status-held';
+                if (dep.status === 'Released') statusClass = 'status-active';
+                else if (dep.status === 'Refunded') statusClass = 'status-sold';
+
+                return `
+                    <tr>
+                        <td><code style="font-size:0.82rem; font-weight:700; color:var(--primary); background:#e8f5e9; padding:3px 8px; border-radius:4px;">${dep.id}</code></td>
+                        <td><strong>${dep.property}</strong></td>
+                        <td>${dep.buyer}</td>
+                        <td><strong style="color:var(--primary); font-size:0.92rem;">${formatPkrPrice(dep.amount)}</strong></td>
+                        <td>${dep.date}</td>
+                        <td><span class="status-badge ${statusClass}">${dep.status}</span></td>
+                        <td style="text-align: right;">
+                            <button class="btn-action" style="color:var(--primary); font-weight:600;" onclick="openEscrowReceiptModal(${idx})" title="View / Print Escrow Certificate">
+                                <i class="fa-solid fa-file-invoice"></i> Receipt
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterDeposits(query) {
+            renderDepositsTable(query);
+        }
+
+        // --- INQUIRY MODAL ACTIONS ---
+        function openReplyModal(idx) {
+            const inq = allInquiries[idx];
+            if (!inq) return;
+            activeInquiryIndex = idx;
+
+            document.getElementById('replyModalBuyerName').textContent = inq.name;
+            document.getElementById('replyModalPropTitle').textContent = inq.property;
+            document.getElementById('replyModalPhone').textContent = inq.phone;
+            document.getElementById('replyModalMsg').textContent = inq.message;
+            document.getElementById('replyModalResponse').value = `Hello ${inq.name}, thank you for your interest in ${inq.property}. Yes, it is available for inspection. Please let me know your preferred time slot.`;
+
+            const modal = document.getElementById('replyInquiryModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function viewInquiryDetail(idx) {
+            openReplyModal(idx);
+        }
+
+        function closeReplyModal() {
+            const modal = document.getElementById('replyInquiryModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function sendWhatsAppReply() {
+            if (activeInquiryIndex === null) return;
+            const inq = allInquiries[activeInquiryIndex];
+            const responseText = document.getElementById('replyModalResponse').value.trim();
+            const cleanPhone = inq.phone.replace(/[^0-9]/g, '');
+            const url = `https://wa.me/${cleanPhone.startsWith('92') ? cleanPhone : '92' + cleanPhone.replace(/^0/, '')}?text=${encodeURIComponent(responseText)}`;
+            window.open(url, '_blank');
+            inq.status = 'Responded';
+            renderInquiriesTable();
+            closeReplyModal();
+            showToast(`WhatsApp chat opened with ${inq.name}`, 'success');
+        }
+
+        function sendInAppReply() {
+            if (activeInquiryIndex === null) return;
+            const inq = allInquiries[activeInquiryIndex];
+            inq.status = 'Responded';
+            renderInquiriesTable();
+            closeReplyModal();
+            showToast(`Official reply dispatched to ${inq.name}!`, 'success');
+        }
+
+        // --- ESCROW RECEIPT MODAL ACTIONS ---
+        function openEscrowReceiptModal(idx) {
+            const dep = allDeposits[idx];
+            if (!dep) return;
+
+            document.getElementById('rcptTxnId').textContent = dep.id;
+            document.getElementById('rcptDate').textContent = dep.date;
+            document.getElementById('rcptBuyer').textContent = dep.buyer;
+            document.getElementById('rcptProperty').textContent = dep.property;
+            document.getElementById('rcptAmount').textContent = formatPkrPrice(dep.amount);
+            document.getElementById('rcptStatus').textContent = dep.status === 'Held' ? 'HELD IN ESCROW' : dep.status.toUpperCase();
+
+            const modal = document.getElementById('escrowReceiptModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeEscrowReceiptModal() {
+            const modal = document.getElementById('escrowReceiptModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // --- KEYBOARD SHORTCUTS FOR MODALS ---
+        document.addEventListener('keydown', (e) => {
+            const previewModal = document.getElementById('dbPreviewModal');
+            if (previewModal && previewModal.classList.contains('active')) {
+                if (e.key === 'ArrowRight') nextDbAngle();
+                else if (e.key === 'ArrowLeft') prevDbAngle();
+                else if (e.key === 'Escape') closeDbPreviewModal();
+            }
+            const addModal = document.getElementById('addPropertyModal');
+            if (addModal && addModal.classList.contains('active') && e.key === 'Escape') {
+                closeAddPropertyModal();
+            }
+            const editModal = document.getElementById('editPropertyModal');
+            if (editModal && editModal.classList.contains('active') && e.key === 'Escape') {
+                closeEditPropertyModal();
+            }
+            const replyModal = document.getElementById('replyInquiryModal');
+            if (replyModal && replyModal.classList.contains('active') && e.key === 'Escape') {
+                closeReplyModal();
+            }
+            const rcptModal = document.getElementById('escrowReceiptModal');
+            if (rcptModal && rcptModal.classList.contains('active') && e.key === 'Escape') {
+                closeEscrowReceiptModal();
+            }
+        });
+
+        // --- INITIALIZATION ON DOM READY ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadListingsFromStorage();
+            renderMyListings('all');
+            renderInquiriesTable();
+            renderDepositsTable();
+            loadDashboardSettings();
+        });
+
+        // Fallback in case DOMContentLoaded already fired
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            loadListingsFromStorage();
+            renderMyListings('all');
+            renderInquiriesTable();
+            renderDepositsTable();
+            loadDashboardSettings();
+        }
+    </script>
+</body>
+</html>
