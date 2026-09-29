@@ -52,8 +52,8 @@
         name: 'Muhammad Ibraheem',
         role: 'Principal Realtor & Partner',
         agency: 'Zameen Signature Realty',
-        phone: '+92 300 1234567',
-        whatsapp: '+923001234567',
+        phone: '+92 3040719087',
+        whatsapp: '+923040719087',
         avatar: './image/agent-avatar1.png'
       }
     },
@@ -232,8 +232,8 @@
         name: 'Muhammad Ibraheem',
         role: 'Principal Realtor & Partner',
         agency: 'Zameen Signature Realty',
-        phone: '+92 300 1234567',
-        whatsapp: '+923001234567',
+        phone: '+92 3040719087',
+        whatsapp: '+923040719087',
         avatar: './image/agent-avatar1.png'
       }
     },
@@ -367,8 +367,8 @@
         name: 'Muhammad Ibraheem',
         role: 'Principal Realtor & Partner',
         agency: 'Zameen Signature Realty',
-        phone: '+92 300 1234567',
-        whatsapp: '+923001234567',
+        phone: '+92 3040719087',
+        whatsapp: '+923040719087',
         avatar: './image/agent-avatar1.png'
       }
     },
@@ -547,8 +547,8 @@
         name: 'Muhammad Ibraheem',
         role: 'Principal Realtor & Partner',
         agency: 'Zameen Signature Realty',
-        phone: '+92 300 1234567',
-        whatsapp: '+923001234567',
+        phone: '+92 3040719087',
+        whatsapp: '+923040719087',
         avatar: './image/agent-avatar1.png'
       }
     }
@@ -1032,7 +1032,7 @@
     document.getElementById('modal-agent-role').textContent = item.agent.role || 'Property Specialist';
     document.getElementById('modal-agent-agency').textContent = item.agent.agency || 'Direct Listing';
     document.getElementById('modal-agent-img').src = item.agent.avatar || './image/agent-avatar1.png';
-    document.getElementById('modal-agent-phone-btn').href = `tel:${item.agent.phone || '+923001234567'}`;
+    document.getElementById('modal-agent-phone-btn').href = `tel:${item.agent.phone || '+923040719087'}`;
     
     // Wire agent WhatsApp to the credentials modal with pre-selected property
     const modalWaBtn = document.getElementById('modal-agent-wa-btn');
@@ -1497,7 +1497,7 @@
 
     // Compose official WhatsApp direct message
     const formattedText = `Hello Zameen Advisory!%0A%0AMy Name: *${encodeURIComponent(name)}*%0APhone: *${encodeURIComponent(phone)}*%0ACity: *${encodeURIComponent(city)}*%0APurpose: *${encodeURIComponent(purpose)}*%0AProperty Ref: *${encodeURIComponent(propRef)}*%0AMessage: ${encodeURIComponent(msg)}%0A%0APlease connect me with a senior advisor.`;
-    const waUrl = `https://wa.me/923001234567?text=${formattedText}`;
+    const waUrl = `https://wa.me/923040719087?text=${formattedText}`;
 
     showToast('Connecting you with Verified Senior Advisor on WhatsApp... 💬', '💬');
 
@@ -1792,7 +1792,7 @@
     const displayLocation = location || 'DHA Phase 6';
     const displayAddress = location ? `${location}, ${city}` : `DHA Phase 6, ${city}`;
     const displaySeller = document.getElementById('list-seller-name').value.trim() || 'Muhammad Ibraheem';
-    const displayContact = document.getElementById('list-seller-contact').value.trim() || '+92 300 1234567';
+    const displayContact = document.getElementById('list-seller-contact').value.trim() || '+92 3040719087';
     const displayDesc = (document.getElementById('list-desc') && document.getElementById('list-desc').value.trim()) || 'Verified luxury property listed on Zameen marketplace with legal registry guarantee, escrow safety, and instant viewing tours.';
     const displayFurnishing = document.getElementById('list-res-furnishing') ? document.getElementById('list-res-furnishing').value : 'Unfurnished';
 
@@ -1852,7 +1852,7 @@
     const location = document.getElementById('list-location').value.trim();
     const description = document.getElementById('list-desc').value.trim();
     const sellerName = document.getElementById('list-seller-name').value.trim() || 'Verified Owner';
-    const sellerContact = document.getElementById('list-seller-contact').value.trim() || '+92 300 1234567';
+    const sellerContact = document.getElementById('list-seller-contact').value.trim() || '+92 3040719087';
     const selectedImg = document.getElementById('list-image-preset').value || './image/house-modern.jpg';
 
     const isLand = ['Plot', 'Commercial Plot', 'Land', 'Development Land'].includes(type);
